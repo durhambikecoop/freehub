@@ -12,8 +12,6 @@
 #  person_id     :integer(4)
 #  staff         :boolean(1)
 #  member        :boolean(1)
-#  start_at      :datetime
-#  end_at        :datetime
 #
 
 class Visit < ActiveRecord::Base

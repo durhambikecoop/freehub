@@ -26,10 +26,6 @@
               = time_short(visit.arrived_at)
             %td.note{:style => 'width:400px;'}
               = note_text(visit.note)
-            %td{:style => 'width:40px;'}
-              =link_to 'Start',  
-            %td{:style => 'width:40px;'}
-              =link_to 'End',
             %td{:style => 'width:30px;'}
               =link_to 'Edit', edit_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path)
             %td 
