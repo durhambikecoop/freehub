@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Organization mappings go last so they don't take precedence'
   map.resources :people, :path_prefix => '/:organization_key', :collection => { :auto_complete_for_person_full_name => :get }
-  map.resources :visits, :path_prefix => '/:organization_key/people/:person_id'
+  map.resources :visits, :path_prefix => '/:organization_key/people/:person_id', :member => {:sign_in => :put, :sign_out => :put}
   map.resources :services, :path_prefix => '/:organization_key/people/:person_id'
   map.resources :notes, :path_prefix => '/:organization_key/people/:person_id'
 
