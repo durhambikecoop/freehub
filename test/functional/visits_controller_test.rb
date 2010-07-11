@@ -87,6 +87,36 @@ class VisitsControllerTest < ActionController::TestCase
     assert_redirected_to '/sfbk/visits/2007/02/01'
     assert_equal 'test', assigns(:visit).note.text
   end
+  
+  def test_should_start_visit
+    test_time = DateTime.civil(2007,2,2,18,05,00)
+    put :sign_in, :organization_key => 'sfbk', :person_id => people(:mary), :id => visits(:mary_2), :visit => { }, :time => test_time
+    assert_redirected_to visit_path(:id => assigns(:visit))
+    assert_equal test_time, assigns(:visit).start_at
+  end
+  
+  def test_should_start_visit_with_destination
+    test_time = DateTime.civil(2007,2,2,18,05,00)
+    put :sign_in, :organization_key => 'sfbk', :person_id => people(:mary), :id => visits(:mary_2), :visit => { }, :time => test_time,
+              :destination => "/sfbk/visits/2007/02/02"
+    assert_redirected_to '/sfbk/visits/2007/02/02'
+    assert_equal test_time, assigns(:visit).start_at
+  end
+  
+  def test_should_end_visit
+    test_time = DateTime.civil(2007,2,2,18,05,00)
+    put :sign_out, :organization_key => 'sfbk', :person_id => people(:mary), :id => visits(:mary_2), :visit => { }, :time => test_time
+    assert_redirected_to visit_path(:id => assigns(:visit))
+    assert_equal test_time, assigns(:visit).end_at
+  end
+  
+  def test_should_end_visit_with_destination
+    test_time = DateTime.civil(2007,2,2,18,05,00)
+    put :sign_out, :organization_key => 'sfbk', :person_id => people(:mary), :id => visits(:mary_2), :visit => { }, :time => test_time,
+              :destination => "/sfbk/visits/2007/02/02"
+    assert_redirected_to '/sfbk/visits/2007/02/02'
+    assert_equal test_time, assigns(:visit).end_at
+  end
 
   def test_should_destroy_visit
     assert_difference('Visit.count', -1) do
