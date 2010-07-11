@@ -95,6 +95,24 @@ class VisitsController < ApplicationController
     end
   end
 
+  # PUT /visits/1/sign_out
+  # PUT /visits/1/sign_out.xml
+  def sign_out
+    @visit = Visit.find(params[:id])
+    @visit.end_at = params[:time] if params[:time]
+
+    respond_to do |format|
+      if @visit.update_attributes(params[:visit])
+        flash[:notice] = "#{@visit.person.full_name} was successfully signed out."
+        format.html { redirect_to(params[:destination] || visit_path(:id => @visit)) }
+        format.xml { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml { render :xml => @visit.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /visits/1
   # DELETE /visits/1.xml
   def destroy

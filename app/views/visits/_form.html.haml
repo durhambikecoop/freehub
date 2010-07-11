@@ -5,6 +5,9 @@
   =labeled_input 'Signed In At', :for => :visit_start_at do
     -capture do
       =calendar_date_select_tag "visit[start_at]", visit.start_at, :time => true, :year_range => 3.years.ago..0.years.from_now
+  =labeled_input 'Signed Out At', :for => :visit_end_at do
+    -capture do
+      =calendar_date_select_tag "visit[end_at]", visit.end_at, :time => true, :year_range => 3.years.ago..0.years.from_now
   =labeled_input 'Volunteer', :for => :visit_volunteer do
     -capture do
       =form.check_box :volunteer

@@ -18,16 +18,25 @@
         -reset_cycle
         -for visit in @groups[group[:key]]
           %tr{:class => cycle('odd','even')}
-            %td{:style => 'width:200px;'}
+            %td{:style => 'width:125px;'}
               =link_to(visit.person.full_name, person_path(:id => visit.person))
             %td
-              = visit.person.person_type
+              = visit.person.person_type 
             %td.time
               = time_short(visit.arrived_at)
-            %td.note{:style => 'width:400px;'}
-              = note_text(visit.note)
             %td
-              =link_to 'Sign In', sign_in_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path, :time => Time.now), :method => :put
+              -if visit.start_at?
+                =time_short(visit.start_at)
+              -else
+                =link_to 'Sign In', sign_in_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path, :time => Time.now), :method => :put
+            %td
+              -if visit.end_at?
+                =time_short(visit.end_at)
+              -else
+                =link_to 'Sign Out', sign_out_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path, :time => Time.now), :method => :put
+
+            %td.note{:style => 'width:350px;'}
+              = note_text(visit.note)
             %td{:style => 'width:30px;'}
               =link_to 'Edit', edit_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path)
             %td 
