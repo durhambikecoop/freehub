@@ -15,21 +15,30 @@
         -next
       %h3 #{@groups[group[:key]].size} #{group[:label]}
       %table.visits
-        -reset_cycle
+        %tr{:class => 'odd'}
+        %th{:style => 'width:125px;'} Name
+        %th Role
+        %th.time{:style => 'width:60px;'} Arrived
+        %th{:style => 'width:60px;'} In
+        %th{:style => 'width:60px;'} Out
+        %th.note{:style => 'width:350px;'} Latest Note
+        %th{:style => 'width:30px;'} 
+        %th 
+
         -for visit in @groups[group[:key]]
           %tr{:class => cycle('odd','even')}
             %td{:style => 'width:125px;'}
               =link_to(visit.person.full_name, person_path(:id => visit.person))
             %td
               = visit.person.person_type 
-            %td.time
+            %td.time{:style => 'width:60px;'}
               = time_short(visit.arrived_at)
-            %td
+            %td{:style => 'width:60px;'}
               -if visit.start_at?
                 =time_short(visit.start_at)
               -else
                 =link_to 'Sign In', sign_in_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path, :time => Time.now), :method => :put
-            %td
+            %td{:style => 'width:60px;'}
               -if visit.end_at?
                 =time_short(visit.end_at)
               -else
