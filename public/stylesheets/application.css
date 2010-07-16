@@ -162,12 +162,21 @@ table.visits {
 tr.even, li.even { background: #ffffff; }
 tr.odd, li.odd  { background: lightcyan; }
 
+
+.dbc tr.odd {
+  background-color: magenta;
+}
 td.note {
   font-style: italic;
 }
 
-td.time {
-  text-align: right;
+td.name, th.name {
+  width : 125px;
+}
+
+td.time, th.time {
+  text-align: left;
+  width: 60px;
 }
 
 div.section {
