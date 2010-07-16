@@ -16,7 +16,7 @@
       %h3 #{@groups[group[:key]].size} #{group[:label]}
       %table.visits
         %tr{:class => cycle('odd','even')}
-          %th{:style => 'width:125px;'} Name
+          %th.name{:style => 'width:125px;'} Name
           %th Role
           %th.time Arrived
           %th.time In
@@ -27,7 +27,7 @@
 
         -for visit in @groups[group[:key]]
           %tr{:class => cycle('odd','even')}
-            %td{:style => 'width:125px;'}
+            %td.name{:style => 'width:125px;'}
               =link_to(visit.person.full_name, person_path(:id => visit.person))
             %td
               = visit.person.person_type 
