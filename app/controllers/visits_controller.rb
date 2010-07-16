@@ -81,7 +81,11 @@ class VisitsController < ApplicationController
   # PUT /visits/1/sign_in.xml
   def sign_in
     @visit = Visit.find(params[:id])
-    @visit.start_at = params[:time] if params[:time]
+    if params[:time]
+      @visit.start_at = params[:time]
+    else
+      @visit.start_at = Time.now;
+    end
 
     respond_to do |format|
       if @visit.update_attributes(params[:visit])
@@ -99,8 +103,12 @@ class VisitsController < ApplicationController
   # PUT /visits/1/sign_out.xml
   def sign_out
     @visit = Visit.find(params[:id])
-    @visit.end_at = params[:time] if params[:time]
-
+    if params[:time]
+      @visit.end_at = params[:time]
+    else
+      @visit.end_at = Time.now;
+    end
+    
     respond_to do |format|
       if @visit.update_attributes(params[:visit])
         flash[:notice] = "#{@visit.person.full_name} was successfully signed out."

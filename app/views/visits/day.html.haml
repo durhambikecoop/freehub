@@ -37,13 +37,12 @@
               -if visit.start_at?
                 =time_short(visit.start_at)
               -else
-                =link_to 'Sign In', sign_in_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path, :time => Time.now), :method => :put
+                =link_to 'Sign In', sign_in_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path), :method => :put
             %td.time
               -if visit.end_at?
                 =time_short(visit.end_at)
-              -else
-                =link_to 'Sign Out', sign_out_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path, :time => Time.now), :method => :put
-
+              -elsif visit.start_at?
+                =link_to 'Sign Out', sign_out_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path), :method => :put
             %td.note{:style => 'width:350px;'}
               = note_text(visit.note)
             %td{:style => 'width:30px;'}
