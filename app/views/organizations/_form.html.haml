@@ -13,3 +13,6 @@
 =labeled_input 'Timezone', :for => :timezone do
   -capture do
     =form.time_zone_select :timezone, ActiveSupport::TimeZone.us_zones, :default => "Pacific Time (US & Canada)"
+=labeled_input 'Use sign out option?', :for => :display_start_end do
+  -capture do
+    %div= form.check_box(:display_start_end)

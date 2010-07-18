@@ -28,6 +28,7 @@ class Organization < ActiveRecord::Base
   def initialize(attributes=nil)
     super(attributes)
     self[:timezone] ||= 'Pacific Time (US & Canada)'
+    self[:display_start_end] ||= false
   end
 
   def member_count
@@ -42,6 +43,10 @@ class Organization < ActiveRecord::Base
     @last_visit ||= Visit.for_organization(self).paginate(:size => 1).to_a.first
   end
 
+  def display_start_end_times?
+    return self[:display_start_end]
+  end
+  
   # Active if a visit within last 30 days
   def active?(on = Time.zone.now)
     return false if !self.last_visit
