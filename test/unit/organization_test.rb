@@ -33,6 +33,12 @@ class OrganizationTest < ActiveSupport::TestCase
     assert !organizations(:sfbk).active?(Time.zone.parse '2007-04-01')
     assert !organizations(:cbi).active?(Time.zone.parse '2007-02-02')
   end
+  
+  def test_display_start_end_times?
+    assert !organizations(:sfbk).display_start_end_times?
+    assert organizations(:sfbc).display_start_end_times?
+    assert !organizations(:cbi).display_start_end_times?
+  end
 
   def test_visits_count
     assert organizations(:sfbk).visits_count > 100
