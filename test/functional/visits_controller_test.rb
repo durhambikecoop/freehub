@@ -145,5 +145,8 @@ class VisitsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:groups)
     assert_equal 0, assigns(:groups)[:volunteers].size
     assert_equal 2, assigns(:groups)[:patrons].size
+    assert_select "table" do
+      assert_select 'th', 8  
+    end
   end
 end
