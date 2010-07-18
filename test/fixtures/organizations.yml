@@ -17,14 +17,14 @@ sfbk:
   key: sfbk
   timezone: Pacific Time (US & Canada)
   location: San Francisco, CA
-  display_start_end: false
+  display_start_end: true
 
 scbc:
   name: Santa Cruz Bike Church
   key: scbc
   timezone: Pacific Time (US & Canada)
   location: Santa Cruz, CA
-  display_start_end: true
+  display_start_end: false
 
 cbi:
   name: Campus Bike Initiative
