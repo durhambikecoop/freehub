@@ -40,4 +40,11 @@ daryl_<%= count %>:
   person: daryl
 <% end %>
 
+mary_3:
+  arrived_at: 2007-02-01 18:01:00
+  start_at: 2007-02-01 18:05:00
+  volunteer: false
+  staff: false
+  member: true
+  person: mary_scbc
 
