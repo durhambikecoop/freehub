@@ -140,13 +140,17 @@ class VisitsControllerTest < ActionController::TestCase
     get :day, :organization_key => 'sfbk', :year => 2007, :month => 2, :day => 1
     assert_response :success
     assert_not_nil assigns(:visits)
-    assert_equal 2, assigns(:visits).size
+    assert_equal 3, assigns(:visits).size
     assert_equal Date.new(2007,2,1), assigns(:day)
     assert_not_nil assigns(:groups)
     assert_equal 0, assigns(:groups)[:volunteers].size
-    assert_equal 2, assigns(:groups)[:patrons].size
+    assert_equal 3, assigns(:groups)[:patrons].size
     assert_select "table" do
-      assert_select 'th', 0  
+      assert_select 'th', 8
+      assert_select 'td' do |elements|
+        assert_select '.time', {:count => 1, :text => "Sign Out"}
+        assert_select '.time', {:count => 1, :text => "Sign In"}
+      end
     end
   end
    
@@ -155,7 +159,7 @@ class VisitsControllerTest < ActionController::TestCase
     get :day, :organization_key => 'scbc', :year => 2007, :month => 2, :day => 1
     assert_response :success
     assert_select "table" do
-      assert_select 'th', 8  
+      assert_select 'th', 0  
     end
   end
 end

@@ -19,7 +19,7 @@ class ReportsControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns(:report)
     assert_not_nil assigns(:visits)
-    assert_equal 102, assigns(:visits).size
+    assert_equal 103, assigns(:visits).size
     assert_equal 20, assigns(:visits).to_a.size
     assert_equal 2, assigns(:visits).page
   end
@@ -37,7 +37,7 @@ class ReportsControllerTest < ActionController::TestCase
             :format => 'csv'
     assert_response :success
     assert_not_nil assigns(:visits)
-    assert_equal 102, assigns(:visits).size
+    assert_equal 103, assigns(:visits).size
 
     output = StringIO.new
     output.binmode
