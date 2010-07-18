@@ -34,9 +34,13 @@ class OrganizationTest < ActiveSupport::TestCase
     assert !organizations(:cbi).active?(Time.zone.parse '2007-02-02')
   end
   
+  def test_display_start_end_default
+    assert !Organization.new(:name => 'Name', :key => 'key').display_start_end_times?
+  end
+  
   def test_display_start_end_times?
     assert !organizations(:sfbk).display_start_end_times?
-    assert organizations(:sfbc).display_start_end_times?
+    assert organizations(:scbc).display_start_end_times?
     assert !organizations(:cbi).display_start_end_times?
   end
 
