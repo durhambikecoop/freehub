@@ -15,16 +15,15 @@
         -next
       %h3 #{@groups[group[:key]].size} #{group[:label]}
       %table.visits
-        -if @organization.display_start_end_times?
-          %tr{:class => cycle('odd','even')}
-            %th.name Name
-            %th Role
-            %th.time Arrived
-            %th.time In
-            %th.time Out
-            %th.note{:style => 'width:350px;'} Note
-            %th{:style => 'width:30px;'} 
-            %th 
+        %tr{:class => cycle('odd','even')}
+          %th.name Name
+          %th Role
+          %th.time Arrived
+          %th.time In
+          %th.time Out
+          %th.note{:style => 'width:350px;'} Note
+          %th{:style => 'width:30px;'} 
+          %th 
 
         -for visit in @groups[group[:key]]
           %tr{:class => cycle('odd','even')}
@@ -34,17 +33,16 @@
               = visit.person.person_type 
             %td.time
               = time_short(visit.arrived_at)
-            -if @organization.display_start_end_times?
-              %td.time
-                -if visit.start_at?
-                  =time_short(visit.start_at)
-                -else
-                  =link_to 'Sign In', sign_in_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path), :method => :put
-              %td.time
-                -if visit.end_at?
-                  =time_short(visit.end_at)
-                -elsif visit.start_at?
-                  =link_to 'Sign Out', sign_out_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path), :method => :put
+            %td.time
+              -if visit.start_at?
+                =time_short(visit.start_at)
+              -else
+                =link_to 'Sign In', sign_in_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path), :method => :put
+            %td.time
+              -if visit.end_at?
+                =time_short(visit.end_at)
+              -elsif visit.start_at?
+                =link_to 'Sign Out', sign_out_visit_path(:person_id => visit.person, :id => visit, :destination => day_visits_path), :method => :put
             %td.note{:style => 'width:350px;'}
               = note_text(visit.note)
             %td{:style => 'width:30px;'}
