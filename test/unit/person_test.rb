@@ -95,5 +95,11 @@ class PersonTest < ActiveSupport::TestCase
   def test_to_csv
     assert_match /^Mary,Member,false,mary@example.com,false,415 123-1234,95105,123 Street St,,San Francisco,CA,95105,USA,1972,2008-01-02 00:00:00,\d{4}-\d{2}-\d{2}$/, people(:mary).to_csv
   end
+  
+  def test_volunteer_hours
+    assert people(:daryl).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 3
+    assert people(:mary).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 0
+    assert people(:victor).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 0
+  end
 end
 
