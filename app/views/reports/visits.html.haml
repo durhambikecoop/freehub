@@ -26,19 +26,25 @@
         %th Name
         %th Type
         %th Volunteer
-        %th Datetime
+        %th Arrived
+        %th In
+        %th Out
         %th Note
       -for visit in @visits
         %tr{:class => cycle('odd','even')}
-          %td{:style => 'width:200px;'}
+          %td{:style => 'width:150px;'}
             =link_to(visit.person.full_name, person_path(:id => visit.person))
           %td 
             = visit.person.staff? ? 'Staff' : 'Patron'
           %td 
-            = visit.volunteer?
+            = visit.volunteer? ? 'Yes' : 'No'
           %td
             = datetime_long(visit.arrived_at)
-          %td.note{:style => 'width:360px;'}
+          %td
+            = time_short(visit.start_at)
+          %td
+            = time_short(visit.end_at)
+          %td.note{:style => 'width:300px;'}
             = note_text(visit.note)
       %tr.list_controls
         %td{:colspan => 5}
