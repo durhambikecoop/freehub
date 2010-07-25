@@ -105,6 +105,14 @@ class Person < ActiveRecord::Base
       'Patron'
     end
   end
+  
+  def volunteer_hours(from=Date.today - 365,to=Date.today)
+    hours = 0
+    self.visits.after(from).before(to).each do |visit|
+      hours += visit.end_at - visit.start_at
+    end
+    hours/3600
+  end
 
   CSV_FIELDS = { :self => %w{first_name last_name staff email email_opt_out phone postal_code street1 street2 city state postal_code country yob created_at membership_expires_on} }
 
