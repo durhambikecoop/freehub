@@ -106,7 +106,7 @@ class Person < ActiveRecord::Base
     end
   end
   
-  def volunteer_hours(from=Date.today - 365,to=Date.today)
+  def volunteer_hours(from=Date.today - 365,to=Date.tomorrow)
     hours = 0
     self.visits.after(from).before(to).each do |visit|
       hours += visit.end_at - visit.start_at
