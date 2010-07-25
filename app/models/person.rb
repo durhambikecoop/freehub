@@ -117,16 +117,25 @@ class Person < ActiveRecord::Base
   end
 
   CSV_FIELDS = { :self => %w{first_name last_name staff email email_opt_out phone postal_code street1 street2 city state postal_code country yob created_at membership_expires_on} }
-
+  CSV_FIELDS_HOURS = { :self => %w{first_name last_name staff hours email yob created_at membership_expires_on} }
+  
   def self.csv_header
     CSV.generate_line(CSV_FIELDS[:self])
   end
 
+  def self.csv_header_hours
+    CSV.generate_line(CSV_FIELDS_HOURS=[:self])
+  end
+  
   def to_csv
     values = self.attributes.values_at(*CSV_FIELDS[:self])
     values[values.size - 2] = created_at.nil? ? nil : created_at.to_s(:db)
     values[values.size - 1] = self.services.last(:membership).nil? ? nil : self.services.last(:membership).end_date.to_s(:db)
     CSV.generate_line values
+  end
+
+  def to_csv_hours
+  
   end
 
   private

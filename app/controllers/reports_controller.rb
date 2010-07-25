@@ -110,6 +110,10 @@ class ReportsController < ApplicationController
       format.html # summary.html.mab
     end
   end
+  
+  def volunteer_hours
+    
+  end
 
   private
 

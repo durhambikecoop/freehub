@@ -47,7 +47,7 @@
           %td.note{:style => 'width:300px;'}
             = note_text(visit.note)
       %tr.list_controls
-        %td{:colspan => 7}
+        %td{:colspan => 5}
           -if @visits.next_page? || @visits.previous_page?
             %div.paginating_links
               More: #{paginating_links(@visits, :params => { :report => params[:report] } )}

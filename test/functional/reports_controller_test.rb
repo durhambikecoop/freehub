@@ -133,5 +133,37 @@ class ReportsControllerTest < ActionController::TestCase
     assert assigns(:report)
     assert assigns(:gchart)
   end
-
+  
+  def test_volunteer_hours_report
+    get :volunteer_hours, :organization_key => 'sfbk',
+            :report => { :after => '2008-01-01', :before => '2008-04-01'},
+            :hours => 10,
+            :page => 2
+    assert_response :success
+    assert_not_nil assigns(:report)
+    assert_not_nil assigns(:volunteer_hours)
+    assert_equal 30, assigns(:volunteer_hours).size
+    assert_equal 20, assigns(:volunteer_hours).to_a.size
+    assert_equal 2, assigns(:volunteer_hours).page
+  end
+  
+  def test_volunteer_hours_report_csv
+    get :volunteer_hours, :organization_key => 'sfbk',
+            :report => { :after => '2008-01-01', :before => '2008-04-01'},
+            :hours => 10,
+            :page => 2
+    assert_response :success
+    assert_not_nil assigns(:report)
+    assert_not_nil assigns(:volunteer_hours)
+    assert_equal 30, assigns(:volunteer_hours).size
+    
+    output = StringIO.new
+    output.binmode
+    assert_nothing_raised { @response.body.call(@response, output) }
+    lines = output.string.split("\n")
+    assert_equal assigns(:volunteer_hours).size + 1, lines.size
+    assert_equal Visit.csv_header_hours, lines[0]
+    assert_equal "attachment; filename=\"sfbk_volunteer_hours_2008-01-01_2008-04-01.csv\"", @response.headers['Content-Disposition']
+  end
+  
 end
