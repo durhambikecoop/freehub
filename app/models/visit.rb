@@ -51,7 +51,7 @@ class Visit < ActiveRecord::Base
   end
 
   CSV_FIELDS = { :person => %w{first_name last_name email email_opt_out phone postal_code},
-                 :self => %w{arrived_at staff member volunteer note} }
+                 :self => %w{arrived_at start_at end_at staff member volunteer note} }
 
   def self.csv_header
     CSV.generate_line(CSV_FIELDS[:person] + CSV_FIELDS[:self])
@@ -60,6 +60,8 @@ class Visit < ActiveRecord::Base
   def to_csv
     values = person.attributes.values_at(*CSV_FIELDS[:person])
     values << (arrived_at.nil? ? nil : arrived_at.strftime("%Y-%m-%d %H:%M"))
+    values << (start_at.nil? ? nil : start_at.strftime("%H:%M"))
+    values << (end_at.nil? ? nil : end_at.strftime("%H:%M"))
     values << staff?
     values << member?
     values << volunteer?
