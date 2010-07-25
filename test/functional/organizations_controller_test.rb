@@ -12,7 +12,8 @@ class OrganizationsControllerTest < ActionController::TestCase
     get :new
     assert_response :success
     assert_select "form#new_organization" do
-      assert_select '.section.organization input', 3
+      assert_select '.section.organization input', 5
+      # Only 4 input fields are visible in this section of the page, there is a hidden field associated with the checkbox
       assert_select '.section.organization select', 1
       assert_select '.section.user input', 6
     end
@@ -55,7 +56,8 @@ class OrganizationsControllerTest < ActionController::TestCase
     get :edit, :id => organizations(:sfbk)
     assert_response :success
     assert_select "form" do
-      assert_select 'input', 5
+      assert_select 'input', 7
+      # Only 6 input fields are visible on the page, there is a hidden field associated with the checkbox
     end
   end
 

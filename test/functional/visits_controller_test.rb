@@ -153,4 +153,15 @@ class VisitsControllerTest < ActionController::TestCase
       end
     end
   end
+   
+  def test_visits_for_day_scbc
+    login_as 'scbc'
+    get :day, :organization_key => 'scbc', :year => 2007, :month => 2, :day => 1
+    assert_response :success
+    assert_select "table" do
+      assert_select 'th', 0  
+    end
+  end
 end
+
+

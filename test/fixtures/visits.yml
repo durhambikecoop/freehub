@@ -12,6 +12,8 @@
 #  person_id     :integer(4)
 #  staff         :boolean(1)
 #  member        :boolean(1)
+#  start_at      :datetime
+#  end_at        :datetime
 #
 
 mary_1:
@@ -44,4 +46,11 @@ daryl_<%= count %>:
   person: daryl
 <% end %>
 
+mary_3:
+  arrived_at: 2007-02-01 18:01:00
+  start_at: 2007-02-01 18:05:00
+  volunteer: false
+  staff: false
+  member: true
+  person: mary_scbc
 

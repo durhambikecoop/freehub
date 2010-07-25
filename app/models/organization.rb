@@ -2,13 +2,14 @@
 #
 # Table name: organizations
 #
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)
-#  key        :string(255)
-#  timezone   :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#  location   :string(255)
+#  id                :integer(4)      not null, primary key
+#  name              :string(255)
+#  key               :string(255)
+#  timezone          :string(255)
+#  created_at        :datetime
+#  updated_at        :datetime
+#  location          :string(255)
+#  display_start_end :boolean(1)
 #
 
 class Organization < ActiveRecord::Base
@@ -27,6 +28,7 @@ class Organization < ActiveRecord::Base
   def initialize(attributes=nil)
     super(attributes)
     self[:timezone] ||= 'Pacific Time (US & Canada)'
+    self[:display_start_end] ||= false
   end
 
   def member_count
@@ -41,6 +43,10 @@ class Organization < ActiveRecord::Base
     @last_visit ||= Visit.for_organization(self).paginate(:size => 1).to_a.first
   end
 
+  def display_start_end_times?
+    return self[:display_start_end]
+  end
+  
   # Active if a visit within last 30 days
   def active?(on = Time.zone.now)
     return false if !self.last_visit
