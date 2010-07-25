@@ -39,8 +39,8 @@ class OrganizationTest < ActiveSupport::TestCase
   end
   
   def test_display_start_end_times?
-    assert !organizations(:sfbk).display_start_end_times?
-    assert organizations(:scbc).display_start_end_times?
+    assert organizations(:sfbk).display_start_end_times?
+    assert !organizations(:scbc).display_start_end_times?
     assert !organizations(:cbi).display_start_end_times?
   end
 
