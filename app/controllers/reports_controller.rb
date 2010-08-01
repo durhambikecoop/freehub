@@ -112,7 +112,29 @@ class ReportsController < ApplicationController
   end
   
   def volunteer_hours
-    
+    if (params[:report])
+      @report = { :for_organization => @organization,
+                  :volunteered_greater => [params[:hours],
+                                           params[:report][:after],
+                                           params[:report][:before] ]}
+      @report.delete_if { |key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
+    else
+      @report = {:for_organization => @organization,
+                 :volunteered_greater => [0, Date.today, Date.tomorrow]}
+    end
+    @volunteer_hours = Person.chain_finders(@report)
+    respond_to do |format|
+      format.html { @volunteer_hours = @volunteer_hours.paginate(params) }
+      format.xml { render :xml => @volunteer_hours }
+      format.csv do
+        stream_csv("#{@organization.key}_volunteer_hours_#{@report[:after]}_#{@report[:before]}.csv") do |output|
+          output << CSV.generate_line(Person::CSV_FIELDS_HOURS[:self])
+          @people.each do |person|
+            output << "\n#{person.to_csv}"
+          end
+        end
+      end
+    end
   end
 
   private

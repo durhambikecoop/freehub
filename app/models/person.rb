@@ -74,6 +74,10 @@ class Person < ActiveRecord::Base
       :conditions => [ "LOWER(full_name) LIKE :name", { :name => "%#{name.downcase}%"} ], 
       :order => "full_name ASC"
   } }
+  
+  named_scope :volunteered_greater, lambda { |hours, from, to| {
+    :conditions => ['people.volunteer_hours(from,to) > ?', hours]
+  } }
 
   def initialize(params={})
     super
@@ -109,7 +113,7 @@ class Person < ActiveRecord::Base
   def volunteer_hours(from=Date.today - 365,to=Date.tomorrow)
     hours = 0
     self.visits.after(from).before(to).each do |visit|
-      if visit.end_at and visit.start_at
+      if visit.end_at and visit.start_at and visit.volunteer
         hours += visit.end_at - visit.start_at
       end
     end
@@ -124,7 +128,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.csv_header_hours
-    CSV.generate_line(CSV_FIELDS_HOURS=[:self])
+    CSV.generate_line(CSV_FIELDS_HOURS[:self])
   end
   
   def to_csv

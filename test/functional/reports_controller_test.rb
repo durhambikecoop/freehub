@@ -151,7 +151,8 @@ class ReportsControllerTest < ActionController::TestCase
     get :volunteer_hours, :organization_key => 'sfbk',
             :report => { :after => '2008-01-01', :before => '2008-04-01'},
             :hours => 10,
-            :page => 2
+            :page => 2,
+            :format => 'csv'
     assert_response :success
     assert_not_nil assigns(:report)
     assert_not_nil assigns(:volunteer_hours)
