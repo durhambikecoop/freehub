@@ -11,6 +11,12 @@
     %p
       The #{link_to 'Services Report', report_path(:action => 'services', :organization_key => @organization.key)}
       lists services by type (Membership, Class, Digging Rights) in a date range and can be exported as CSV for use in a spreadsheet program.
+  %div.section
+    %h2 Volunteer Hours
+    %p
+      The #{link_to 'Volunteer Hours Report', report_path(:action => 'volunteer_hours', :organization_key => @organization.key)}
+      lists the volunteers that have volunteered more than a given amount in a date range and can be exported
+      for use as CSV for use in a speadsheet program.
 
 %div.column
   %div.section
@@ -23,4 +29,3 @@
     %p
       The #{link_to 'Summary Report', report_path(:action => 'summary', :organization_key => @organization.key)}
       provides a high level view of who is visiting the shop when.
-

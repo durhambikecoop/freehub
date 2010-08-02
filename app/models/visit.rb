@@ -49,6 +49,15 @@ class Visit < ActiveRecord::Base
     self.volunteer ||= false
     self.note ||= Note.new
   end
+  
+ # def volunteer_hours
+ #   hours = 0
+ #   self.each |visit|
+ #     if visit.end_at and visit.start_at and visit.volunteer
+ #       hours += visit.end_at - visit.start_at
+ #     end
+ #   end
+ # end
 
   CSV_FIELDS = { :person => %w{first_name last_name email email_opt_out phone postal_code},
                  :self => %w{arrived_at start_at end_at staff member volunteer note} }

@@ -129,7 +129,7 @@ class ReportsController < ApplicationController
       format.csv do
         stream_csv("#{@organization.key}_volunteer_hours_#{@report[:after]}_#{@report[:before]}.csv") do |output|
           output << CSV.generate_line(Person::CSV_FIELDS_HOURS[:self])
-          @people.each do |person|
+          @volunteer_hours.each do |person|
             output << "\n#{person.to_csv}"
           end
         end

@@ -17,8 +17,8 @@
       %li 
         =submit_tag "Update"
 %div.section
-  -if @visits.empty?
-    %div.list_status No visits for date range.
+  -if @volunteer_hours.empty?
+    %div.list_status No members volunteered enough hours in the given date range.
   -else
     %div.list_status #{@visits.to_a.size} of #{@visits.size} visits shown.
     %table
