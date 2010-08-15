@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100626223138) do
+ActiveRecord::Schema.define(:version => 20100815182735) do
 
   create_table "notes", :force => true do |t|
     t.text     "text"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20100626223138) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "location"
+    t.boolean  "display_start_end"
   end
 
   add_index "organizations", ["key"], :name => "index_organizations_on_key", :unique => true
@@ -121,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20100626223138) do
     t.boolean  "member"
     t.datetime "start_at"
     t.datetime "end_at"
+    t.float    "duration"
   end
 
   add_index "visits", ["created_by_id"], :name => "fk_visits_created_by"

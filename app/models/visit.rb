@@ -14,6 +14,7 @@
 #  member        :boolean(1)
 #  start_at      :datetime
 #  end_at        :datetime
+#  duration      :time
 #
 
 class Visit < ActiveRecord::Base
@@ -23,11 +24,11 @@ class Visit < ActiveRecord::Base
   has_userstamps
 
   validates_presence_of :person_id, :arrived_at
-
+  
   acts_as_paginated
   chains_finders
 
-  before_save :remove_empty_note, :record_staff_status, :record_member_status
+  before_save :remove_empty_note, :record_staff_status, :record_member_status, :calculate_duration
 
   named_scope :for_organization, lambda { |organization| {
       :conditions => [ "people.organization_id = ?", organization ],
@@ -41,6 +42,10 @@ class Visit < ActiveRecord::Base
 
   named_scope :before, lambda { |date| {
       :conditions => [ "convert_tz(visits.arrived_at,'+00:00','#{Time.zone.formatted_offset}') < ?", date.to_date.to_time.utc ]
+  } }
+  
+  named_scope :volunteer, lambda{ |bool| {
+    :conditions => {:volunteer => bool}
   } }
 
   def initialize(params={})
@@ -58,6 +63,11 @@ class Visit < ActiveRecord::Base
  #     end
  #   end
  # end
+  def calculate_duration
+    if self.start_at and self.end_at
+      self.duration = self.end_at - self.start_at
+    end
+  end
 
   CSV_FIELDS = { :person => %w{first_name last_name email email_opt_out phone postal_code},
                  :self => %w{arrived_at start_at end_at staff member volunteer note} }

@@ -113,14 +113,17 @@ class ReportsController < ApplicationController
   
   def volunteer_hours
     if (params[:report])
-      @report = { :for_organization => @organization,
-                  :volunteered_greater => [params[:hours],
-                                           params[:report][:after],
-                                           params[:report][:before] ]}
-      @report.delete_if { |key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
+      @report = {:for_organization => @organization,
+                 :volunteered_greater => params[:report][:volunteered_greater],
+                 :after => params[:report][:after],
+                 :before => params[:report][:before]}
+      @report.delete_if { |key, value| value.respond_to?(:empty?) && value.empty? }
+      #@report.delete_if { |key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
     else
       @report = {:for_organization => @organization,
-                 :volunteered_greater => [0, Date.today, Date.tomorrow]}
+                 :volunteered_greater => 0,
+                 :after => Date.today, 
+                 :before => Date.tomorrow]}
     end
     @volunteer_hours = Person.chain_finders(@report)
     respond_to do |format|
