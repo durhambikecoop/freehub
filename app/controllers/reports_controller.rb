@@ -125,13 +125,15 @@ class ReportsController < ApplicationController
                   :volunteer => true,
                   :volunteered_greater => 0,
                   :after => Date.today, 
-                  :before => Date.tomorrow]}
+                  :before => Date.tomorrow}
     end
     @visits = Person.visits.chain_finders(@report)
     
-    @visits.each { |visit|
+    @visits.each do |visit|
       if visit.person.volunteer_hours(@report[:after],@report[:before]) > @report[:volunteered_greater]
-        @volunteers.push(visit.person) }
+        @volunteers.push(visit.person)
+      end
+    end
     
     respond_to do |format|
       format.html { @volunteer_hours = @volunteer_hours.paginate(params) }
