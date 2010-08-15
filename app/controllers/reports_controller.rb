@@ -113,19 +113,26 @@ class ReportsController < ApplicationController
   
   def volunteer_hours
     if (params[:report])
-      @report = {:for_organization => @organization,
-                 :volunteered_greater => params[:report][:volunteered_greater],
-                 :after => params[:report][:after],
-                 :before => params[:report][:before]}
+      @report = { :for_organization => @organization,
+                  :volunteer => true,
+                  :volunteered_greater => params[:report][:volunteered_greater],
+                  :after => params[:report][:after],
+                  :before => params[:report][:before]}
       @report.delete_if { |key, value| value.respond_to?(:empty?) && value.empty? }
       #@report.delete_if { |key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
     else
-      @report = {:for_organization => @organization,
-                 :volunteered_greater => 0,
-                 :after => Date.today, 
-                 :before => Date.tomorrow]}
+      @report = { :for_organization => @organization,
+                  :volunteer => true,
+                  :volunteered_greater => 0,
+                  :after => Date.today, 
+                  :before => Date.tomorrow]}
     end
-    @volunteer_hours = Person.chain_finders(@report)
+    @visits = Person.visits.chain_finders(@report)
+    
+    @visits.each { |visit|
+      if visit.person.volunteer_hours(@report[:after],@report[:before]) > @report[:volunteered_greater]
+        @volunteers.push(visit.person) }
+    
     respond_to do |format|
       format.html { @volunteer_hours = @volunteer_hours.paginate(params) }
       format.xml { render :xml => @volunteer_hours }

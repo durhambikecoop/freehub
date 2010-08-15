@@ -14,7 +14,7 @@
 #  member        :boolean(1)
 #  start_at      :datetime
 #  end_at        :datetime
-#  duration      :time
+#  duration      :float
 #
 
 mary_1:
