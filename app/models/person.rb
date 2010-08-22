@@ -54,12 +54,14 @@ class Person < ActiveRecord::Base
 
   before_validation :trim_attributes
   before_save :titleize_name, :update_full_name, :titleize_address, :downcase_email
-  
+
+  acts_as_taggable
   acts_as_paginated
   chains_finders
 
   named_scope :for_organization, lambda { |organization| {
       :conditions => { :organization_id => organization },
+      :order => "full_name ASC"
   } }
 
   named_scope :after, lambda { |date| {
@@ -71,8 +73,7 @@ class Person < ActiveRecord::Base
   } }
 
   named_scope :matching_name, lambda { |name| {
-      :conditions => [ "LOWER(full_name) LIKE :name", { :name => "%#{name.downcase}%"} ], 
-      :order => "full_name ASC"
+      :conditions => [ "LOWER(full_name) LIKE :name", { :name => "%#{name.downcase}%"} ]
   } }
 
   def initialize(params={})
@@ -105,6 +106,11 @@ class Person < ActiveRecord::Base
       'Patron'
     end
   end
+
+  def tag_list_with_sorting
+    tag_list_without_sorting.sort!
+  end
+  alias_method_chain :tag_list, :sorting
 
   CSV_FIELDS = { :self => %w{first_name last_name staff email email_opt_out phone postal_code street1 street2 city state postal_code country yob created_at membership_expires_on} }
 
