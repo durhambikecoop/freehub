@@ -7,15 +7,19 @@
 %table
   %tr
     %th When
-    %th Datetime
+    %th Arrived
+    %th In
+    %th Out
     %th Volunteer
     %th Note
   -for visit in @visits
     %tr{:class => cycle('odd','even')}
       %td #{time_ago_in_words(visit.arrived_at)} ago
       %td= datetime_long(visit.arrived_at)
+      %td= time_short(visit.start_at)
+      %td= time_short(visit.end_at)
       %td= visit.volunteer?
-      %td.note{:style => 'width:360px;'}= note_text(visit.note)
+      %td.note{:style => 'width:300px;'}= note_text(visit.note)
       %td= link_to 'Show', visit_path(:id => visit)
       %td= link_to 'Edit', edit_visit_path(:id => visit)
       %td= link_to 'Remove', visit_path(:id => visit), :confirm => 'Are you sure?', :method => :delete

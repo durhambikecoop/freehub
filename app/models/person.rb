@@ -75,6 +75,7 @@ class Person < ActiveRecord::Base
   named_scope :matching_name, lambda { |name| {
       :conditions => [ "LOWER(full_name) LIKE :name", { :name => "%#{name.downcase}%"} ]
   } }
+  
 
   def initialize(params={})
     super
@@ -106,6 +107,16 @@ class Person < ActiveRecord::Base
       'Patron'
     end
   end
+  
+  def volunteer_hours(from=Date.today - 365,to=Date.tomorrow)
+    hours = 0
+    self.visits.volunteer(true).after(from).before(to).each do |visit|
+      if visit.duration
+        hours += visit.duration
+      end
+    end
+    hours/3600
+  end
 
   def tag_list_with_sorting
     tag_list_without_sorting.sort!
@@ -113,16 +124,25 @@ class Person < ActiveRecord::Base
   alias_method_chain :tag_list, :sorting
 
   CSV_FIELDS = { :self => %w{first_name last_name staff email email_opt_out phone postal_code street1 street2 city state postal_code country yob created_at membership_expires_on} }
-
+  CSV_FIELDS_HOURS = { :self => %w{first_name last_name staff hours email yob created_at membership_expires_on} }
+  
   def self.csv_header
     CSV.generate_line(CSV_FIELDS[:self])
   end
 
+  def self.csv_header_hours
+    CSV.generate_line(CSV_FIELDS_HOURS[:self])
+  end
+  
   def to_csv
     values = self.attributes.values_at(*CSV_FIELDS[:self])
     values[values.size - 2] = created_at.nil? ? nil : created_at.to_s(:db)
     values[values.size - 1] = self.services.last(:membership).nil? ? nil : self.services.last(:membership).end_date.to_s(:db)
     CSV.generate_line values
+  end
+
+  def to_csv_hours
+  
   end
 
   private

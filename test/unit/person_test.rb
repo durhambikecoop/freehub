@@ -121,12 +121,17 @@ class PersonTest < ActiveSupport::TestCase
 
       assert_equal %w[mechanic mom], @person.tag_list
     end
-
+  end
     should "be found by tag" do
       people = Person.tagged_with 'mom'
       assert_equal 1, people.size
       assert_equal @person, people.first
     end
+  
+  def test_volunteer_hours
+    assert people(:daryl).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 3
+    assert people(:mary).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 0
+    assert people(:victor).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 0
   end
 end
 

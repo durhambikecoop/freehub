@@ -54,6 +54,29 @@
   padding: 6px 8px;
 }
 
+table.visits {
+  width: 400px;
+  clear:both;
+}
+
+td.what {
+  width: 20%;
+}
+
+td.time {
+  text-align: right; 
+  width: 15%;
+}
+
+td.when {
+  text-align: right;
+  width: 20%;
+}
+
+td.note {
+  font-style: italic;
+}
+
 li .what {
   float:left;
   display:block;
@@ -61,14 +84,8 @@ li .what {
   clear:both;
 }
 
-li .when {
-}
-
 li .note {
   font-style: italic;
-  display: block;
-  clear:both;
-  padding: 3px 0;
 }
 
 form li {
