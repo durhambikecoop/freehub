@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20100815182735) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "location"
-    t.boolean  "display_start_end"
   end
 
   add_index "organizations", ["key"], :name => "index_organizations_on_key", :unique => true
