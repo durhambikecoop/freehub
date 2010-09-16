@@ -18,7 +18,7 @@
 %ul#summary
   %li.person_type
     =@person.person_type
-  %li Has volunteered #{@person.volunteer_hours.round(2)} hours since #{date_short(Date.today - 365)}
+  %li Has volunteered #{@person.volunteer_hours} hours since #{date_short(Date.today - 365)}
   -if !@person.membership
     %li Not a member
     %li= link_to 'Create Membership', new_service_path(:person_id => @person)
@@ -64,7 +64,7 @@
         -for visit in visits
           %tr{:class => cycle('odd','even', :name => 'visits')}
             %td.what= visit.volunteer? ? 'Volunteered' : 'Visited'
-            %td.time #{(visit.duration/3600).round(2)} hours 
+            %td.time #{visit.duration.nil? ? 0 : (visit.duration/3600).round(2)} hours 
             %td.when{:title => datetime_long(visit.arrived_at)}= "#{time_ago_in_words(visit.arrived_at)} ago"
             %td.note= note_text(visit.note)
       %p

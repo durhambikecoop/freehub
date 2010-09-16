@@ -110,12 +110,19 @@ class Person < ActiveRecord::Base
   
   def volunteer_hours(from=Date.today - 365,to=Date.tomorrow)
     hours = 0
-    self.visits.volunteer(true).after(from).before(to).each do |visit|
-      if visit.duration
-        hours += visit.duration
-      end
+    if not self.visits.nil?
+      self.visits.volunteer(true).after(from).before(to).each do |visit|
+        if visit.duration
+          hours += visit.duration
+        end
+      end 
     end
-    hours/3600
+    if hours > 0
+      hours /= 3600
+      hours.round(2)
+    else
+      return 0
+    end
   end
 
   def tag_list_with_sorting
