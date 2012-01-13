@@ -123,9 +123,9 @@ class PersonTest < ActiveSupport::TestCase
     end
   end
     should "be found by tag" do
-      people = Person.tagged_with 'mom'
-      assert_equal 1, people.size
-      assert_equal @person, people.first
+      @person = Person.tagged_with 'mom'
+      assert_equal 1, @person.size
+      assert_equal @person[0], people(:mary)
     end
   
   def test_volunteer_hours
