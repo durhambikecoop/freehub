@@ -44,26 +44,26 @@
       =labeled_input 'Year of Birth', :for => :yob do
         -capture do
           =form.text_field(:yob, :class => 'text short')
-      =labeled_input 'Role' do
-        -capture do
-          = form.radio_button(:staff, false, :class => 'radio')
-          %label.choice{:for => 'person_staff_false'} Patron
-          = form.radio_button(:staff, true, :class => 'radio')
-          %label.choice{:for => 'person_staff_true'} Staff
-      -if person.new_record?
-        =labeled_input 'Services' do
-          -capture do
-            = check_box_tag(:membership, true, params[:membership], :class => 'checkbox')
-            %label.choice{:for => 'membership'} Paid Membership starting today
-            = check_box_tag(:eab, true, params[:eab], :class => 'checkbox')
-            %label.choice{:for => 'eab'} Paid Digging Rights/EAB starting today
-            = check_box_tag(:visiting, true, params[:visiting], :class => 'checkbox')
-            %label.choice{:for => 'visiting'} Visiting the shop today
-      -else
-        %li= userstamp_labeled_values(person)
-      =labeled_input 'Tags', :for => :tag_list do
-        -capture do
-          %div
-            =form.text_field(:tag_list, :class => 'text medium')
-            %label Separated by commas
+      -#=labeled_input 'Role' do
+      -#  -capture do
+      -#    = form.radio_button(:staff, false, :class => 'radio')
+      -#    %label.choice{:for => 'person_staff_false'} Patron
+      -#    = form.radio_button(:staff, true, :class => 'radio')
+      -#    %label.choice{:for => 'person_staff_true'} Staff
+      -#-if person.new_record?
+      -#  =labeled_input 'Services' do
+      -#    -capture do
+      -#      = check_box_tag(:membership, true, params[:membership], :class => 'checkbox')
+      -#      %label.choice{:for => 'membership'} Paid Membership starting today
+      -#      = check_box_tag(:eab, true, params[:eab], :class => 'checkbox')
+      -#      %label.choice{:for => 'eab'} Paid Digging Rights/EAB starting today
+      -#      = check_box_tag(:visiting, true, params[:visiting], :class => 'checkbox')
+      -#      %label.choice{:for => 'visiting'} Visiting the shop today
+      -#-else
+      -#  %li= userstamp_labeled_values(person)
+      -#=labeled_input 'Tags', :for => :tag_list do
+      -#  -capture do
+      -#    %div
+      -#      =form.text_field(:tag_list, :class => 'text medium')
+      -#      %label Separated by commas
       %li= form.submit person.new_record? ? "Create" : "Update"

@@ -19,6 +19,8 @@
   %li.person_type
     =@person.person_type
   %li Has volunteered #{@person.volunteer_hours} hours since #{date_short(Date.today - 365)}
+  -# added average hours in - djz 5/27/2011
+  %li Average hours per month: #{ (@person.volunteer_hours/12*10**2).round.to_f/10**2}
   -if !@person.membership
     %li Not a member
     %li= link_to 'Create Membership', new_service_path(:person_id => @person)
@@ -42,9 +44,9 @@
     %ul
       %li
         = f.radio_button(:volunteer, false)
-        %label.inline{:for => 'visit_volunteer_false'} Visiting
+        %label.inline{:for => 'visit_volunteer_false'} Project
         = f.radio_button(:volunteer, true)
-        %label.inline{:for => 'visit_volunteer_true'} Volunteering
+        %label.inline{:for => 'visit_volunteer_true'} Volunteer
       %li
         -fields_for :note do |note|
           =note.text_area :text, :style => 'display:none;'
@@ -63,7 +65,7 @@
       %table.visits
         -for visit in visits
           %tr{:class => cycle('odd','even', :name => 'visits')}
-            %td.what= visit.volunteer? ? 'Volunteered' : 'Visited'
+            %td.what= visit.volunteer? ? 'Volunteered' : 'Project'
             %td.time #{visit.duration.nil? ? 0 : (visit.duration/3600).round(2)} hours 
             %td.when{:title => datetime_long(visit.arrived_at)}= "#{time_ago_in_words(visit.arrived_at)} ago"
             %td.note= note_text(visit.note)

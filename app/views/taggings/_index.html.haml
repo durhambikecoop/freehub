@@ -20,7 +20,7 @@
             %option{:value => ''} Choose tag
             -for tag in @organization.tag_list - person.tag_list
               %option{:value => tag}= tag
-            %option{:value => ''}= '------'
-            %option{:value => ''} New tag
+            -# %option{:value => ''}= '------'
+            -# %option{:value => ''} New tag
       %li
         %a{:href => '#', :class => 'show_view'} Done
