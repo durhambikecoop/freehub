@@ -19,8 +19,9 @@
   %li.person_type
     =@person.person_type
   %li Has volunteered #{@person.volunteer_hours} hours since #{date_short(Date.today - 365)}
-  -# added average hours in - djz 5/27/2011
-  %li Average hours per month: #{ (@person.volunteer_hours/12*10**2).round.to_f/10**2}
+  %li Average volunteer hours per month: #{ (@person.volunteer_hours/12*10**2).round.to_f/10**2}
+  %li Has used #{@person.project_hours} project hours since #{date_short(Date.today - 365)}
+  %li Average project hours per month: #{ (@person.project_hours/12*10**2).round.to_f/10**2}
   -if !@person.membership
     %li Not a member
     %li= link_to 'Create Membership', new_service_path(:person_id => @person)

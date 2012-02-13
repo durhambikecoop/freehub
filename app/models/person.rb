@@ -22,6 +22,8 @@
 #  updated_by_id   :integer(4)
 #  organization_id :integer(4)
 #  yob             :integer(4)
+#  volunteer_hours :float
+#  project_hours   :float
 #
 
 class Person < ActiveRecord::Base
@@ -112,6 +114,23 @@ class Person < ActiveRecord::Base
     hours = 0
     if not self.visits.nil?
       self.visits.volunteer(true).after(from).before(to).each do |visit|
+        if visit.duration
+          hours += visit.duration
+        end
+      end 
+    end
+    if hours > 0
+      hours /= 3600
+      hours.round(2)
+    else
+      return 0
+    end
+  end
+
+  def project_hours(from=Date.today - 365,to=Date.tomorrow)
+    hours = 0
+    if not self.visits.nil?
+      self.visits.volunteer(false).after(from).before(to).each do |visit|
         if visit.duration
           hours += visit.duration
         end
