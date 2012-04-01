@@ -127,7 +127,7 @@ class PersonTest < ActiveSupport::TestCase
       assert_equal 1, @person.size
       assert_equal @person[0], people(:mary)
     end
-  
+
   def test_volunteer_hours
     assert people(:daryl).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 3
     assert people(:mary).volunteer_hours(Date.new(2007,2,2), Date.new(2007,2,1)), 0

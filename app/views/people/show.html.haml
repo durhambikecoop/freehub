@@ -32,7 +32,7 @@
     %li.expired Membership expired #{date_short @person.membership.end_date}
     %li= link_to 'Renew', new_service_path(:person_id => @person)
   %li= @person.email
- 
+
   %li= @person.postal_code
   %li= link_to "Edit #{@person.first_name}", edit_person_path(:id => @person)
   %li &nbsp;
