@@ -67,7 +67,7 @@
         -for visit in visits
           %tr{:class => cycle('odd','even', :name => 'visits')}
             %td.what= visit.volunteer? ? 'Volunteered' : 'Project'
-            %td.time #{visit.duration.nil? ? 0 : (visit.duration/3600).round(2)} hours 
+            %td.time #{(visit.duration/3600).round(2)} hours 
             %td.when{:title => datetime_long(visit.arrived_at)}= "#{time_ago_in_words(visit.arrived_at)} ago"
             %td.note= note_text(visit.note)
       %p
