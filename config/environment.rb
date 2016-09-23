@@ -6,6 +6,7 @@
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+
 # Authorization plugin
 AUTHORIZATION_MIXIN = 'object roles'
 
@@ -37,6 +38,9 @@ Rails::Initializer.run do |config|
   # Run "rake -D time" for a list of tasks for finding time zone names.
   config.time_zone = 'Pacific Time (US & Canada)'
   config.active_record.default_timezone = :utc
+  
+  config.rails_lts_options = { :default => :hardened }
+
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
