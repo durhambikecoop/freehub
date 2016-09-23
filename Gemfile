@@ -1,9 +1,20 @@
 source 'https://rubygems.org'
 
-gem "rails", "2.3.17"
+
+git 'https://github.com/makandra/rails.git', :branch => '2-3-lts' do
+  gem 'rails', '~>2.3.18'
+  gem 'actionmailer',     :require => false
+  gem 'actionpack',       :require => false
+  gem 'activerecord',     :require => false
+  gem 'activeresource',   :require => false
+  gem 'activesupport',    :require => false
+  gem 'railties',         :require => false
+  gem 'railslts-version', :require => false
+end
+
 gem "mysql"
 gem "authorization", github:  "asalant/rails-authorization-plugin"
-gem 'json', '1.7.7' # (CVE-2013-026) Can remove once rails depends on > 1.7.6
+gem 'json', '1.8.2' # (CVE-2013-026) Can remove once rails depends on > 1.7.6
 gem 'haml', "3.0.25"
 gem 'googlecharts', "1.6.0"
 gem 'calendar_date_select', "1.16.1"

@@ -4,23 +4,42 @@ GIT
   specs:
     authorization (1.0.12)
 
+GIT
+  remote: https://github.com/makandra/rails.git
+  revision: c2be41e8dba79d95a8e91150f7d0e489d097fc26
+  branch: 2-3-lts
+  specs:
+    actionmailer (2.3.18.18)
+      actionpack (= 2.3.18.18)
+    actionpack (2.3.18.18)
+      activesupport (= 2.3.18.18)
+      rack (< 1.5)
+    activerecord (2.3.18.18)
+      activesupport (= 2.3.18.18)
+    activeresource (2.3.18.18)
+      activesupport (= 2.3.18.18)
+    activesupport (2.3.18.18)
+    rails (2.3.18.18)
+      actionmailer (= 2.3.18.18)
+      actionpack (= 2.3.18.18)
+      activerecord (= 2.3.18.18)
+      activeresource (= 2.3.18.18)
+      activesupport (= 2.3.18.18)
+      railslts-version (= 2.3.18.18)
+      railties (= 2.3.18.18)
+    railslts-version (2.3.18.18)
+    railties (2.3.18.18)
+      actionpack (= 2.3.18.18)
+      activesupport (= 2.3.18.18)
+      rake (>= 0.8.3, < 11)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    actionmailer (2.3.17)
-      actionpack (= 2.3.17)
-    actionpack (2.3.17)
-      activesupport (= 2.3.17)
-      rack (~> 1.1.0)
-    activerecord (2.3.17)
-      activesupport (= 2.3.17)
-    activeresource (2.3.17)
-      activesupport (= 2.3.17)
-    activesupport (2.3.17)
     acts-as-taggable-on (2.0.6)
-    annotate (2.6.2)
+    annotate (2.6.7)
       activerecord (>= 2.3.0)
-      rake (>= 0.8.7)
+      rake (~> 10.4.2, >= 10.4.2)
     builder (3.2.2)
     calendar_date_select (1.16.1)
     googlecharts (1.6.0)
@@ -28,30 +47,30 @@ GEM
     hoptoad_notifier (2.4.11)
       activesupport
       builder
-    json (1.7.7)
+    i18n (0.7.0)
+    json (1.8.2)
     mysql (2.9.1)
-    newrelic_rpm (3.7.3.204)
-    power_assert (0.3.0)
-    rack (1.1.6)
-    rails (2.3.17)
-      actionmailer (= 2.3.17)
-      actionpack (= 2.3.17)
-      activerecord (= 2.3.17)
-      activeresource (= 2.3.17)
-      activesupport (= 2.3.17)
-      rake (>= 0.8.3)
-    rake (10.1.1)
-    rdoc (4.1.1)
+    newrelic_rpm (3.16.2.321)
+    power_assert (0.3.1)
+    rack (1.4.7)
+    rake (10.4.2)
+    rdoc (4.2.2)
       json (~> 1.4)
-    test-unit (3.1.9)
+    test-unit (3.2.1)
       power_assert
     thoughtbot-shoulda (2.11.1)
-    validates_email_format_of (1.5.3)
+    validates_email_format_of (1.6.3)
+      i18n
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionmailer!
+  actionpack!
+  activerecord!
+  activeresource!
+  activesupport!
   acts-as-taggable-on (= 2.0.6)
   annotate
   authorization!
@@ -59,10 +78,12 @@ DEPENDENCIES
   googlecharts (= 1.6.0)
   haml (= 3.0.25)
   hoptoad_notifier
-  json (= 1.7.7)
+  json (= 1.8.2)
   mysql
   newrelic_rpm
-  rails (= 2.3.17)
+  rails (~> 2.3.18)!
+  railslts-version!
+  railties!
   rdoc
   test-unit
   thoughtbot-shoulda
