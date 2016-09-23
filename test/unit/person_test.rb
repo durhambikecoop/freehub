@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
@@ -19,9 +21,16 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 'First', person.full_name
   end
 
+  def test_saves_name_with_international_chars
+    person = Person.create! :organization => organizations(:sfbk), :first_name => 'Erik', :last_name => 'Dölerud'
+    assert_equal person.full_name, 'Erik Dölerud'
+    assert_equal person.last_name, 'Dölerud'
+  end
+
   def test_titleize_name
     assert_equal 'First Last', Person.create!(:organization => organizations(:sfbk), :first_name => 'first', :last_name => 'last').full_name
     assert_equal 'First de Last', Person.create!(:organization => organizations(:sfbk), :first_name => 'first', :last_name => 'de last').full_name
+    assert_equal 'Erik Dölerud', Person.create!(:organization => organizations(:sfbk), :first_name => 'erik', :last_name => 'dölerud').full_name
   end
 
   def test_validates_yob
@@ -57,8 +66,19 @@ class PersonTest < ActiveSupport::TestCase
 
   def test_in_date_range
     from, to = Date.new(2007,1,1), Date.new(2008,1,3)
-    assert_equal 7, Person.after(from).size
+    assert_equal 8, Person.after(from).size
     assert_equal 2, Person.after(from).before(to).size
+  end
+
+  def test_is_staff
+    assert_equal 2, Person.is_staff(true).size
+    Person.is_staff(true).each do |person| 
+      assert person.staff
+    end
+    assert_equal 6, Person.is_staff(false).size
+    Person.is_staff(false).each do |person| 
+      assert !person.staff
+    end
   end
 
   def test_email_validation
@@ -89,11 +109,11 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   def test_csv_header
-    assert_equal 'first_name,last_name,staff,email,email_opt_out,phone,postal_code,street1,street2,city,state,postal_code,country,yob,created_at,membership_expires_on', Person.csv_header
+    assert_equal "id,first_name,last_name,staff,email,email_opt_out,phone,postal_code,street1,street2,city,state,postal_code,country,yob,tag_list,created_at,membership_expires_on\n", Person.csv_header
   end
 
   def test_to_csv
-    assert_match /^Mary,Member,false,mary@example.com,false,415 123-1234,95105,123 Street St,,San Francisco,CA,95105,USA,1972,2008-01-02 00:00:00,\d{4}-\d{2}-\d{2}$/, people(:mary).to_csv
+    assert_match /^\d+,Mary,Member,false,mary@example.com,false,415 123-1234,95105,123 Street St,,San Francisco,CA,95105,USA,1972,"mechanic, mom",2008-01-02 00:00:00,\d{4}-\d{2}-\d{2}$/, people(:mary).to_csv
   end
 
   context "A person Mary with tags" do

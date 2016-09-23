@@ -26,7 +26,7 @@ class ReportsController < ApplicationController
         stream_csv("#{@organization.key}_visits_#{@report[:after]}_#{@report[:before]}.csv") do |output|
           output.write Visit.csv_header
           @visits.each do |visit|
-            output.write "\n#{visit.to_csv}"
+            output.write "#{visit.to_csv}"
           end
         end
       end
@@ -56,7 +56,7 @@ class ReportsController < ApplicationController
         stream_csv("#{@organization.key}_services_#{@report[:end_after]}_#{@report[:end_before]}.csv") do |output|
           output.write CSV.generate_line(Service::CSV_FIELDS[:person] + Service::CSV_FIELDS[:self])
           @services.each do |service|
-            output.write "\n#{service.to_csv}"
+            output.write "#{service.to_csv}"
           end
         end
       end
@@ -67,8 +67,10 @@ class ReportsController < ApplicationController
     if (params[:report])
       @report = params[:report].merge :for_organization => @organization,
                                       :after => params[:report][:after],
-                                      :before => params[:report][:before]
+                                      :before => params[:report][:before],
+                                      :is_staff => params[:report][:is_staff]
       @report.delete(:matching_name) if @report[:matching_name] && @report[:matching_name].length < 3
+      @report.delete(:is_staff) if @report[:is_staff] && @report[:is_staff] == "all"
       @report.delete_if { |key, value| value.nil? || (value.respond_to?(:empty?) && value.empty?) }
     else
       @report = {:for_organization => @organization,
@@ -84,7 +86,7 @@ class ReportsController < ApplicationController
         stream_csv("#{@organization.key}_people_#{@report[:after]}_#{@report[:before]}.csv") do |output|
           output.write CSV.generate_line(Person::CSV_FIELDS[:self])
           @people.each do |person|
-            output.write "\n#{person.to_csv}"
+            output.write "#{person.to_csv}"
           end
         end
       end

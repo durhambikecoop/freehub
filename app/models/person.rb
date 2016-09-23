@@ -50,7 +50,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :first_name, :organization_id
   validates_uniqueness_of :email, :scope => :organization_id, :case_sensitive => false, :allow_nil => true, :allow_blank => true
   validates_length_of :first_name, :last_name, :street1, :street2, :city, :state, :postal_code, :country, :within => 1..40, :allow_blank => true
-  validates_email_veracity_of :email, :domain_check => true
+  validates_email_format_of :email, :check_mx => true, :allow_blank => true
   # Note that Date.today gets evaluates at class load time, not evaluation time, but we can live with that fudge
   validates_numericality_of :yob, :allow_nil => true, :only_integer => true, :greater_than => Date.today.year - 100, :less_than => Date.today.year + 1
 
@@ -78,6 +78,9 @@ class Person < ActiveRecord::Base
       :conditions => [ "LOWER(full_name) LIKE :name", { :name => "%#{name.downcase}%"} ]
   } }
 
+  named_scope :is_staff, lambda { |is_staff| {
+      :conditions => [ "people.staff = ?", is_staff]
+  } }
 
   def initialize(params={})
     super
@@ -162,6 +165,7 @@ class Person < ActiveRecord::Base
 
   def to_csv
     values = self.attributes.values_at(*CSV_FIELDS[:self])
+    values[values.size - 3] = tag_list_with_sorting.to_s
     values[values.size - 2] = created_at.nil? ? nil : created_at.to_s(:db)
     values[values.size - 1] = self.services.last(:membership).nil? ? nil : self.services.last(:membership).end_date.to_s(:db)
     CSV.generate_line values

@@ -70,11 +70,27 @@ class PeopleControllerTest < ActionController::TestCase
     assert_redirected_to new_session_path
   end
 
-  def test_auto_complete
-    get :auto_complete_for_person_full_name, :organization_key => 'sfbk', :person => { :full_name => 'memb' }
-    assert_response :success
-    assert_not_nil assigns(:items)
-    assert_equal 1, assigns(:items).size
+  context "Auto-complete" do
+
+    setup do
+      get :auto_complete_for_person_full_name, :organization_key => 'sfbk', :person => { :full_name => 'eri' }
+    end
+
+    should respond_with :success
+    should assign_to :items
+
+    should 'find matching items' do
+      assert_equal 1, assigns(:items).size
+    end
+
+    should 'render list of people' do
+      assert_select 'ul li.person', 1
+    end
+
+    should 'render add link' do
+      assert_select 'ul li.add', 1
+    end
+
   end
 
   context "Update person" do
@@ -99,14 +115,14 @@ class PeopleControllerTest < ActionController::TestCase
       get :show, :organization_key => 'sfbk', :id => people(:mary).id
     end
 
-    should_respond_with :success
-    should_assign_to :person
-    should_assign_to :all_tags
+    should respond_with :success
+    should assign_to :person
+    should assign_to :all_tags
 
     should 'render links to tags' do
       assert_select '.tags_control' do
-        assert_select 'a[href=/sfbk/tags/mom]'
-        assert_select 'a[href=/sfbk/tags/mechanic]'
+        assert_select "a[href=/sfbk/tags/#{tags(:mom).id}]"
+        assert_select "a[href=/sfbk/tags/#{tags(:mechanic).id}]"
       end
     end
   end
