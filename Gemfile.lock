@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/asalant/rails-authorization-plugin.git
-  revision: 505bd47addf2ef5e3b5d98a7ea8d1352c2aa4ee6
-  specs:
-    authorization (1.0.12)
-
-GIT
   remote: https://github.com/makandra/rails.git
   revision: c2be41e8dba79d95a8e91150f7d0e489d097fc26
   branch: 2-3-lts
@@ -40,6 +34,7 @@ GEM
     annotate (2.6.7)
       activerecord (>= 2.3.0)
       rake (~> 10.4.2, >= 10.4.2)
+    authorization (1.0.12)
     builder (3.2.2)
     calendar_date_select (1.16.1)
     googlecharts (1.6.0)
@@ -47,10 +42,12 @@ GEM
     hoptoad_notifier (2.4.11)
       activesupport
       builder
-    i18n (0.7.0)
     json (1.8.2)
     mysql (2.9.1)
     newrelic_rpm (3.16.2.321)
+    passenger (5.0.30)
+      rack
+      rake (>= 0.8.1)
     power_assert (0.3.1)
     rack (1.4.7)
     rake (10.4.2)
@@ -59,8 +56,6 @@ GEM
     test-unit (3.2.1)
       power_assert
     thoughtbot-shoulda (2.11.1)
-    validates_email_format_of (1.6.3)
-      i18n
 
 PLATFORMS
   ruby
@@ -73,21 +68,21 @@ DEPENDENCIES
   activesupport!
   acts-as-taggable-on (= 2.0.6)
   annotate
-  authorization!
+  authorization
   calendar_date_select (= 1.16.1)
   googlecharts (= 1.6.0)
   haml (= 3.0.25)
   hoptoad_notifier
-  json (= 1.8.2)
+  json
   mysql
   newrelic_rpm
+  passenger
   rails (~> 2.3.18)!
   railslts-version!
   railties!
   rdoc
   test-unit
   thoughtbot-shoulda
-  validates_email_format_of
 
 BUNDLED WITH
-   1.12.4
+   1.13.1
