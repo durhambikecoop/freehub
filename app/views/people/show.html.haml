@@ -68,7 +68,12 @@
           %tr{:class => cycle('odd','even', :name => 'visits')}
             %td.what= visit.volunteer? ? 'Volunteered' : 'Project'
             %td.time #{(visit.duration/3600).round(2)} hours 
-            %td.when{:title => datetime_long(visit.arrived_at)}= "#{time_ago_in_words(visit.arrived_at)} ago"
+            -#but when arrive doesn't exist! -DJZ 8/14/2017
+            -# %td.when{:title => datetime_long(visit.arrived_at)}= "#{time_ago_in_words(visit.arrived_at)} ago"
+            -if visit.arrived_at.nil?
+              %td.when Error: no record of arrival
+            -else
+              %td.when{:title => datetime_long(visit.arrived_at)}= "#{time_ago_in_words(visit.arrived_at)} ago"
             %td.note= note_text(visit.note)
       %p
         =link_to "See All #{visits.size} Visits with Details", visits_path(:organization_key => @organization.key, :person_id => @person)

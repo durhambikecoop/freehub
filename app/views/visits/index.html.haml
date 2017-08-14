@@ -14,7 +14,10 @@
     %th Note
   -for visit in @visits
     %tr{:class => cycle('odd','even')}
-      %td #{time_ago_in_words(visit.arrived_at)} ago
+      -if visit.arrived_at.nil?
+        %td Error: no arrival time
+      -else
+        %td #{time_ago_in_words(visit.arrived_at)} ago
       %td= datetime_long(visit.arrived_at)
       %td= time_short(visit.start_at)
       %td= time_short(visit.end_at)
