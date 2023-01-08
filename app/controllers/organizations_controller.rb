@@ -1,100 +1,70 @@
 class OrganizationsController < ApplicationController
+  before_action :set_organization, only: %i[ show edit update destroy ]
 
-  skip_before_filter :login_required, :only => [:index, :show, :new, :create]
-  before_filter :assign_id_param, :resolve_organization_by_id, :except => [ :index, :new, :create ]
-
-  permit "admin", :only => [ :destroy ]
-  permit "admin or (manager of :organization)", :only => [ :show, :edit, :update ]
-
-  # GET /organizations
-  # GET /organizations.xml
+  # GET /organizations or /organizations.json
   def index
-    @organizations = Organization.find(:all, :order => 'name ASC')
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @organizations }
-    end
+    @organizations = Organization.all
   end
 
-  # GET /organizations/1
-  # GET /organizations/1.xml
+  # GET /organizations/1 or /organizations/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @organization }
-    end
   end
 
   # GET /organizations/new
-  # GET /organizations/new.xml
   def new
     @organization = Organization.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @organization }
-    end
   end
 
   # GET /organizations/1/edit
   def edit
   end
 
-  # POST /organizations
-  # POST /organizations.xml
+  # POST /organizations or /organizations.json
   def create
-    @organization = Organization.new(params[:organization])
-    @user = User.new(params[:user])
+    @organization = Organization.new(organization_params)
 
     respond_to do |format|
-      if @organization.valid? && @user.valid? && @organization.save && @user.save
-        @user.has_role 'manager', @organization
-        self.current_user = @user
-        flash[:notice] = 'Organization was successfully created.'
-        format.html { redirect_to @organization }
-        format.xml  { render :xml => @organization, :status => :created, :location => @organization }
+      if @organization.save
+        format.html { redirect_to organization_url(@organization), notice: "Organization was successfully created." }
+        format.json { render :show, status: :created, location: @organization }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @organization.errors, :status => :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /organizations/1
-  # PUT /organizations/1.xml
+  # PATCH/PUT /organizations/1 or /organizations/1.json
   def update
     respond_to do |format|
-      if @organization.update_attributes(params[:organization])
-        flash[:notice] = 'Organization was successfully updated.'
-        format.html { redirect_to @organization }
-        format.xml  { head :ok }
+      if @organization.update(organization_params)
+        format.html { redirect_to organization_url(@organization), notice: "Organization was successfully updated." }
+        format.json { render :show, status: :ok, location: @organization }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @organization.errors, :status => :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /organizations/1
-  # DELETE /organizations/1.xml
+  # DELETE /organizations/1 or /organizations/1.json
   def destroy
     @organization.destroy
-    flash[:notice] = 'Organization was successfully removed.'
 
     respond_to do |format|
-      format.html { redirect_to(organizations_url) }
-      format.xml  { head :ok }
+      format.html { redirect_to organizations_url, notice: "Organization was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
 
   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_organization
+      @organization = Organization.find(params[:id])
+    end
 
-  def resolve_organization_by_id
-    @organization = Organization.find(params[:id]) if params[:id]
-  end
-
-  def assign_id_param
-    params[:id] ||= @organization.id if @organization
-  end
+    # Only allow a list of trusted parameters through.
+    def organization_params
+      params.require(:organization).permit(:name, :slug, :timezone, :location)
+    end
 end

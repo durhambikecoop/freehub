@@ -1,160 +1,70 @@
 class VisitsController < ApplicationController
+  before_action :set_visit, only: %i[ show edit update destroy ]
 
-  permit "admin or (manager of :organization)"
-
-  # GET /visits
-  # GET /visits.xml
+  # GET /visits or /visits.json
   def index
-    @visits = @person.visits.paginate(:page => params[:page])
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @visits }
-    end
+    @visits = Visit.all
   end
 
-  # GET /visits/1
-  # GET /visits/1.xml
+  # GET /visits/1 or /visits/1.json
   def show
-    @visit = Visit.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml { render :xml => @visit }
-    end
   end
 
   # GET /visits/new
-  # GET /visits/new.xml
   def new
     @visit = Visit.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml { render :xml => @visit }
-    end
   end
 
   # GET /visits/1/edit
   def edit
-    @visit = Visit.find(params[:id])
   end
 
-  # POST /visits
-  # POST /visits.xml
+  # POST /visits or /visits.json
   def create
-    @visit = Visit.new(params[:visit])
-    @visit.note = Note.new(params[:note]) if params[:note]
-    @visit.person = @person
+    @visit = Visit.new(visit_params)
 
     respond_to do |format|
       if @visit.save
-        flash[:notice] = "Visit for #{@person.full_name} was successfully created."
-        format.html { redirect_to(params[:destination] || visits_path) }
-        format.xml { render :xml => @visit, :status => :created, :location => @visit }
+        format.html { redirect_to visit_url(@visit), notice: "Visit was successfully created." }
+        format.json { render :show, status: :created, location: @visit }
       else
-        format.html { render :action => "new" }
-        format.xml { render :xml => @visit.errors, :status => :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @visit.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /visits/1
-  # PUT /visits/1.xml
+  # PATCH/PUT /visits/1 or /visits/1.json
   def update
-    @visit = Visit.find(params[:id])
-    @visit.note = Note.new(params[:note]) if params[:note]
-
     respond_to do |format|
-      if @visit.update_attributes(params[:visit])
-        flash[:notice] = "Visit for #{@visit.person.full_name} was successfully updated."
-        format.html { redirect_to(params[:destination] || visit_path(:id => @visit)) }
-        format.xml { head :ok }
+      if @visit.update(visit_params)
+        format.html { redirect_to visit_url(@visit), notice: "Visit was successfully updated." }
+        format.json { render :show, status: :ok, location: @visit }
       else
-        format.html { render :action => "edit" }
-        format.xml { render :xml => @visit.errors, :status => :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @visit.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /visits/1/sign_in
-  # PUT /visits/1/sign_in.xml
-  def sign_in
-    @visit = Visit.find(params[:id])
-    if params[:time]
-      @visit.start_at = params[:time]
-    else
-      @visit.start_at = Time.now;
-    end
-
-    respond_to do |format|
-      if @visit.update_attributes(params[:visit])
-        flash[:notice] = "#{@visit.person.full_name} was successfully signed in."
-        format.html { redirect_to(params[:destination] || visit_path(:id => @visit)) }
-        format.xml { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml { render :xml => @visit.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /visits/1/sign_out
-  # PUT /visits/1/sign_out.xml
-  def sign_out
-    @visit = Visit.find(params[:id])
-    if params[:time]
-      @visit.end_at = params[:time]
-    else
-      @visit.end_at = Time.now;
-    end
-
-    respond_to do |format|
-      if @visit.update_attributes(params[:visit])
-        flash[:notice] = "#{@visit.person.full_name} was successfully signed out."
-        format.html { redirect_to(params[:destination] || visit_path(:id => @visit)) }
-        format.xml { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml { render :xml => @visit.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /visits/1
-  # DELETE /visits/1.xml
+  # DELETE /visits/1 or /visits/1.json
   def destroy
-    @visit = Visit.find(params[:id])
     @visit.destroy
-    flash[:notice] = "Visit for #{@visit.person.full_name} was successfully removed."
 
     respond_to do |format|
-      format.html { redirect_to(params[:destination] || visits_path) }
-      format.xml { head :ok }
+      format.html { redirect_to visits_url, notice: "Visit was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
 
-  def today
-    today = Date.today
-    params.merge! :year => today.year, :month => today.month, :day => today.day
-    day
-  end
-
-  def day
-    @day = date_from_params(params)
-    @visits = Visit.for_organization(@organization).after(@day).before(@day.tomorrow)
-    @groups = @visits.inject({:volunteers => [], :patrons => []}) do |groups, visit|
-      if visit.volunteer?
-        groups[:volunteers] << visit
-      else
-        groups[:patrons] << visit
-      end
-      groups
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_visit
+      @visit = Visit.find(params[:id])
     end
 
-    respond_to do |format|
-      format.html { render :action => :day }
-      format.xml { render :xml => @visits }
+    # Only allow a list of trusted parameters through.
+    def visit_params
+      params.require(:visit).permit(:note_id, :volunteer, :arrived_at, :start_at, :end_at)
     end
-  end
 end

@@ -1,92 +1,70 @@
 class ServicesController < ApplicationController
+  before_action :set_service, only: %i[ show edit update destroy ]
 
-  permit "admin or (manager of :organization)"
-
-  # GET /services
-  # GET /services.xml
+  # GET /services or /services.json
   def index
-    @services = @person.services.paginate(:page => params[:page])
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @services }
-    end
+    @services = Service.all
   end
 
-  # GET /services/1
-  # GET /services/1.xml
+  # GET /services/1 or /services/1.json
   def show
-    @service = Service.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @service }
-    end
   end
 
   # GET /services/new
-  # GET /services/new.xml
   def new
     @service = Service.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @service }
-    end
   end
 
   # GET /services/1/edit
   def edit
-    @service = Service.find(params[:id])
   end
 
-  # POST /services
-  # POST /services.xml
+  # POST /services or /services.json
   def create
-    @service = Service.new(params[:service])
-    @service.note = Note.new(params[:note]) if params[:note]
-    @service.person = @person
+    @service = Service.new(service_params)
 
     respond_to do |format|
       if @service.save
-        flash[:notice] = 'Service was successfully created.'
-        format.html { redirect_to person_path(:id => @person) }
-        format.xml  { render :xml => @service, :status => :created, :location => @service }
+        format.html { redirect_to service_url(@service), notice: "Service was successfully created." }
+        format.json { render :show, status: :created, location: @service }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @service.errors, :status => :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /services/1
-  # PUT /services/1.xml
+  # PATCH/PUT /services/1 or /services/1.json
   def update
-    @service = Service.find(params[:id])
-    @service.note = Note.new(params[:note]) if params[:note]
-
     respond_to do |format|
-      if @service.update_attributes(params[:service])
-        flash[:notice] = 'Service was successfully updated.'
-        format.html { redirect_to service_path(:id => @service) }
-        format.xml  { head :ok }
+      if @service.update(service_params)
+        format.html { redirect_to service_url(@service), notice: "Service was successfully updated." }
+        format.json { render :show, status: :ok, location: @service }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @service.errors, :status => :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /services/1
-  # DELETE /services/1.xml
+  # DELETE /services/1 or /services/1.json
   def destroy
-    @service = Service.find(params[:id])
     @service.destroy
-    flash[:notice] = 'Service was successfully removed.'
 
     respond_to do |format|
-      format.html { redirect_to(services_url) }
-      format.xml  { head :ok }
+      format.html { redirect_to services_url, notice: "Service was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_service
+      @service = Service.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def service_params
+      params.require(:service).permit(:start_date, :end_date, :paid, :volunteered, :service_type, :note_id, :person_id)
+    end
 end

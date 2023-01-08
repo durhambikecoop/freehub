@@ -1,97 +1,70 @@
-# encoding: utf-8
-
 class PeopleController < ApplicationController
+  before_action :set_person, only: %i[ show edit update destroy ]
 
-  permit "admin or (manager of :organization)"
+  # GET /people or /people.json
+  def index
+    @people = Person.all
+  end
 
-  # GET /people/1
-  # GET /people/1.xml
+  # GET /people/1 or /people/1.json
   def show
-    @person = Person.find(params[:id])
-    @all_tags = @organization.tag_list
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @person }
-    end
   end
 
   # GET /people/new
-  # GET /people/new.xml
   def new
     @person = Person.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @person }
-    end
   end
 
   # GET /people/1/edit
   def edit
-    @person = Person.find(params[:id])
   end
 
-  # POST /people
-  # POST /people.xml
+  # POST /people or /people.json
   def create
-    @person = Person.new(params[:person])
-    @person.organization = @organization
+    @person = Person.new(person_params)
 
     respond_to do |format|
       if @person.save
-        @person.services << Service.new(:service_type_id => 'MEMBERSHIP', :paid => true) if params[:membership]
-        @person.services << Service.new(:service_type_id => 'EAB', :paid => true) if params[:eab]
-        @person.visits << Visit.new if params[:visiting]
-
-        flash[:notice] = 'Person was successfully created.'
-        format.html do
-          if params[:visiting]
-            redirect_to today_visits_path
-          else
-            redirect_to(person_path(:id => @person))
-          end
-        end
-        format.xml  { render :xml => @person, :status => :created, :location => @person }
+        format.html { redirect_to person_url(@person), notice: "Person was successfully created." }
+        format.json { render :show, status: :created, location: @person }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @person.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /people/1
-  # PUT /people/1.xml
+  # PATCH/PUT /people/1 or /people/1.json
   def update
-    @person = Person.find(params[:id])
-
     respond_to do |format|
-      if @person.update_attributes(params[:person])
-        flash[:notice] = 'Person was successfully updated.'
-        format.html { redirect_to(person_path) }
-        format.xml  { head :ok }
+      if @person.update(person_params)
+        format.html { redirect_to person_url(@person), notice: "Person was successfully updated." }
+        format.json { render :show, status: :ok, location: @person }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @person.errors, :status => :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @person.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /people/1
-  # DELETE /people/1.xml
+  # DELETE /people/1 or /people/1.json
   def destroy
-    @person = Person.find(params[:id])
     @person.destroy
-    flash[:notice] = 'Person was successfully removed.'
 
     respond_to do |format|
-      format.html { redirect_to @organization }
-      format.xml  { head :ok }
+      format.html { redirect_to people_url, notice: "Person was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
 
-  def auto_complete_for_person_full_name
-    @items = Person.for_organization(@organization).matching_name(params[:person][:full_name]).paginate(:size => 15)
-    render :inline => "<%= auto_complete_result_with_add_person @items, 'full_name' %>"
-  end
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_person
+      @person = Person.find(params[:id])
+    end
+
+    # Only allow a list of trusted parameters through.
+    def person_params
+      params.require(:person).permit(:full_name, :country, :address, :email, :email_opt_out, :phone, :organization_id)
+    end
 end

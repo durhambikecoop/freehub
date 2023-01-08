@@ -1,0 +1,2 @@
+web: rails s
+js: npm --prefix=assets run watch
