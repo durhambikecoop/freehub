@@ -1,9 +1,10 @@
-== Freehub
+== DBC Freehub
 
-Freehub is a Rails application created by the San Francisco Bike Kitchen
-to track members and visits to the shop in San Francisco.
+The Durham Bike Co-op (DBC) Freehub is a Ruby application used by DBC to track volunteer hours, achievement
+progress, and event attendance. DBC Freehub is forked from a similar Ruby application created by the San
+Francisco Bike Kitchen located at https://github.com/asalant/freehub.
 
-It is built as a multi-tentant system and deployed at http://freehub.bikekitchen.org
-where it is also used by several other community bike shops.
+DBC Freehub is built using the Rails framework and is deployed on Digital Ocean at TBS.
 
-The project home is http://github.com/asalant/freehub. For project details, support, developer guide and more see http://wiki.github.com/asalant/freehub/.
+The DBC Freehub home is https://github.com/durhambikecoop/freehub. Project details, user and developer
+guides, and the latest news are located at https://wiki.github.com/durhambikecoop/freehub/.
