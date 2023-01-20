@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Documentation
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         run: |
           cd ..
           git clone https://${GH_REPO_DEST}
