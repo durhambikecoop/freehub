@@ -33,6 +33,7 @@ class DatabaseTasks
     migrate_user_organization_roles()
     migrate_people()
     migrate_visits()
+    migrate_services()
     migrate_notes()
   end
 
@@ -166,7 +167,7 @@ class DatabaseTasks
           updated_by_user_id: old_person.updated_by_id,
           created_by_user_id: old_person.created_by_id,
           phone: phone,
-          birth_year: old_person.yob || 1920,
+          birth_year: old_person.yob,
           country: 'US',
           address: {
             street1: old_person.street1,
@@ -186,7 +187,7 @@ class DatabaseTasks
     Visit.transaction do
       puts "Migrating #{OldFreehubData::Visit.count} visits..."
       visits = []
-      OldFreehubData::Visit.preload(person: :organization).find_each do |old_visit|
+      OldFreehubData::Visit.preload(:person).find_each do |old_visit|
         visits << {
           id: old_visit.id,
           person_id: old_visit.person_id,
@@ -202,7 +203,79 @@ class DatabaseTasks
     end
   end
 
+  def migrate_services()
+    Service.transaction do
+      puts "Migrating #{OldFreehubData::Service.count} services..."
+      services = []
+
+      OldFreehubData::Service.preload(:person).find_each do |old_service|
+        services << {
+          id: old_service.id,
+          person_id: old_service.person_id,
+          organization_id: old_service.person.organization_id,
+          created_at: old_service.created_at,
+          updated_by_user_id: old_service.updated_by_id,
+          created_by_user_id: old_service.created_by_id,
+          start_date: old_service.start_date,
+          end_date: old_service.end_date,
+          service_type: old_service.service_type_id,
+          paid: old_service.paid,
+          volunteered: old_service.volunteered
+        }
+      end
+
+      Service.insert_all!(services)
+    end
+  end
+
   def migrate_notes()
+    Note.transaction do
+      puts "Migrating #{OldFreehubData::Note.count} notes..."
+      notes = []
+      person_notes = []
+      visit_updates = {}
+      service_updates = {}
+
+      people_ids = Person.pluck(:id).to_set
+      visit_ids = Visit.pluck(:id).to_set
+      service_ids = Service.pluck(:id).to_set
+      OldFreehubData::Note.find_each do |old_note|
+        case old_note.notable_type
+        when 'Person'
+          next unless people_ids.include?(old_note.notable_id)
+
+          # Create a note for the person using person_note join
+          person_notes << {
+            person_id: old_note.notable_id,
+            note_id: old_note.id
+          }
+        when 'Visit'
+          next unless visit_ids.include?(old_note.notable_id)
+
+          # Update the visit to reference the note
+          visit_updates[old_note.notable_id] = { note_id: old_note.id }
+        when 'Service'
+          next unless service_ids.include?(old_note.notable_id)
+
+          # Update the service to reference the note
+          service_updates[old_note.notable_id] = { note_id: old_note.id }
+        end
+        notes << {
+          id: old_note.id,
+          created_at: old_note.created_at,
+          updated_by_user_id: old_note.updated_by_id,
+          created_by_user_id: old_note.created_by_id,
+          body: old_note.text
+        }
+      end
+
+      Note.insert_all!(notes)
+      Visit.update!(visit_updates.keys, visit_updates.values)
+      Service.update!(service_updates.keys, service_updates.values)
+      PeopleNote.insert_all!(person_notes)
+
+      puts "Migrated #{notes.count} notes, #{person_notes.count} person_notes, #{visit_updates.count} visit notes, #{service_updates.count} service notes"
+    end
   end
 end
 

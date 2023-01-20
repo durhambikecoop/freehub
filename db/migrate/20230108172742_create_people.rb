@@ -3,7 +3,7 @@ class CreatePeople < ActiveRecord::Migration[7.0]
     create_table :people do |t|
       t.text :first_name, null: false
       t.text :last_name, null: false
-      t.integer :birth_year, null: false
+      t.integer :birth_year, null: true
       t.text :country, null: false
       t.jsonb :address, null: false, default: {}
       t.text :email, null: false

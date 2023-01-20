@@ -13,5 +13,8 @@ module OldFreehubData
   #  updated_at    :datetime
   #
   class Note < OldFreehubData::ApplicationRecord
+    belongs_to :created_by, class_name: 'User'
+    belongs_to :updated_by, class_name: 'User'
+    belongs_to :notable, polymorphic: true
   end
 end

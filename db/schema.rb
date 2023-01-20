@@ -42,7 +42,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
   create_table "people", force: :cascade do |t|
     t.text "first_name", null: false
     t.text "last_name", null: false
-    t.integer "birth_year", null: false
+    t.integer "birth_year"
     t.text "country", null: false
     t.jsonb "address", default: {}, null: false
     t.text "email", null: false
@@ -72,11 +72,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
   create_table "services", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
-    t.boolean "paid"
-    t.boolean "volunteered"
-    t.string "service_type"
+    t.boolean "paid", default: false, null: false
+    t.boolean "volunteered", default: false, null: false
+    t.string "service_type", null: false
     t.bigint "organization_id", null: false
-    t.bigint "note_id", null: false
+    t.bigint "note_id"
     t.bigint "person_id", null: false
     t.bigint "created_by_user_id", null: false
     t.bigint "updated_by_user_id", null: false

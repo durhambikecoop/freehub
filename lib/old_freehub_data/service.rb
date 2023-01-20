@@ -16,5 +16,6 @@ module OldFreehubData
   #  updated_by_id   :integer(4)
   #
   class Service < OldFreehubData::ApplicationRecord
+    belongs_to :person
   end
 end
