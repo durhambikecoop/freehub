@@ -32,8 +32,7 @@ jobs:
         with:
           ruby-version: '3.1'
 
-      - name: Install bundler
-        run: bundle install
+      - run: bundle install
 
       - name: Documentation
         run: |
