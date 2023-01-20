@@ -29,9 +29,11 @@ jobs:
     steps:
       - name: Check-out code
         uses: actions/checkout@v3
-#      - name: Documentation
-#        run: |
-#          cd ..
+      - name: Documentation
+        run: |
+          dir -al
+          cd ..
+          dir -al
 #          git clone https://${GH_REPO_DEST}
 #          git clone https://${GH_REPO_CONSOLIDATE}
 #          yes | cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
