@@ -38,7 +38,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          bundle install
+          bundle exec rake
 
       - name: Documentation
         run: |
