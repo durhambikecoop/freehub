@@ -30,5 +30,6 @@ module OldFreehubData
     belongs_to :organization
     belongs_to :created_by, class_name: 'User'
     belongs_to :updated_by, class_name: 'User'
+    acts_as_taggable
   end
 end
