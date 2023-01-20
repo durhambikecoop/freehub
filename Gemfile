@@ -65,6 +65,9 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  # Include mysql in development for migrations from old databases
+  gem "mysql2", "~> 0.5.3"
 end
 
 group :test do

@@ -5,7 +5,8 @@ class CreateVisits < ActiveRecord::Migration[7.0]
       t.datetime :arrived_at
       t.datetime :start_at
       t.datetime :end_at
-      t.references :note, foreign_key: true
+      t.references :organization, null: false, foreign_key: true
+      t.references :note, foreign_key: true, null: true
       t.references :person, null: false, foreign_key: true
       t.references :created_by_user, null: false, foreign_key: { to_table: :users }
       t.references :updated_by_user, null: false, foreign_key: { to_table: :users }

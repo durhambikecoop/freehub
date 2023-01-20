@@ -7,7 +7,7 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.text :country, null: false
       t.jsonb :address, null: false, default: {}
       t.text :email, null: false
-      t.text :phone, null: false
+      t.text :phone, null: true
       t.boolean :email_opt_out, null: false, default: false
       t.references :organization, null: false, foreign_key: true
       t.references :created_by_user, null: false, foreign_key: { to_table: :users }

@@ -6,6 +6,7 @@ class CreateServices < ActiveRecord::Migration[7.0]
       t.boolean :paid
       t.boolean :volunteered
       t.string :service_type
+      t.references :organization, null: false, foreign_key: true
       t.references :note, null: false, foreign_key: true
       t.references :person, null: false, foreign_key: true
       t.references :created_by_user, null: false, foreign_key: { to_table: :users }

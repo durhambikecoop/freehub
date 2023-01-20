@@ -32,12 +32,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
     t.string "name", null: false
     t.string "slug", null: false
     t.string "location", null: false
-    t.integer "timezone", null: false
+    t.string "timezone", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
     t.check_constraint "slug::text ~* '^[a-z0-9_-]{3,20}$'::text", name: "valid_slug"
-    t.check_constraint "timezone >= 0 AND timezone <= 300", name: "valid_timezone"
   end
 
   create_table "people", force: :cascade do |t|
@@ -47,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
     t.text "country", null: false
     t.jsonb "address", default: {}, null: false
     t.text "email", null: false
-    t.text "phone", null: false
+    t.text "phone"
     t.boolean "email_opt_out", default: false, null: false
     t.bigint "organization_id", null: false
     t.bigint "created_by_user_id", null: false
@@ -76,6 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
     t.boolean "paid"
     t.boolean "volunteered"
     t.string "service_type"
+    t.bigint "organization_id", null: false
     t.bigint "note_id", null: false
     t.bigint "person_id", null: false
     t.bigint "created_by_user_id", null: false
@@ -84,6 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
     t.datetime "updated_at", null: false
     t.index ["created_by_user_id"], name: "index_services_on_created_by_user_id"
     t.index ["note_id"], name: "index_services_on_note_id"
+    t.index ["organization_id"], name: "index_services_on_organization_id"
     t.index ["person_id"], name: "index_services_on_person_id"
     t.index ["updated_by_user_id"], name: "index_services_on_updated_by_user_id"
   end
@@ -129,6 +130,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
     t.datetime "arrived_at"
     t.datetime "start_at"
     t.datetime "end_at"
+    t.bigint "organization_id", null: false
     t.bigint "note_id"
     t.bigint "person_id", null: false
     t.bigint "created_by_user_id", null: false
@@ -137,6 +139,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
     t.datetime "updated_at", null: false
     t.index ["created_by_user_id"], name: "index_visits_on_created_by_user_id"
     t.index ["note_id"], name: "index_visits_on_note_id"
+    t.index ["organization_id"], name: "index_visits_on_organization_id"
     t.index ["person_id"], name: "index_visits_on_person_id"
     t.index ["updated_by_user_id"], name: "index_visits_on_updated_by_user_id"
   end
@@ -149,12 +152,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
   add_foreign_key "people_notes", "notes"
   add_foreign_key "people_notes", "people"
   add_foreign_key "services", "notes"
+  add_foreign_key "services", "organizations"
   add_foreign_key "services", "people"
   add_foreign_key "services", "users", column: "created_by_user_id"
   add_foreign_key "services", "users", column: "updated_by_user_id"
   add_foreign_key "user_organization_roles", "organizations"
   add_foreign_key "user_organization_roles", "users"
   add_foreign_key "visits", "notes"
+  add_foreign_key "visits", "organizations"
   add_foreign_key "visits", "people"
   add_foreign_key "visits", "users", column: "created_by_user_id"
   add_foreign_key "visits", "users", column: "updated_by_user_id"
