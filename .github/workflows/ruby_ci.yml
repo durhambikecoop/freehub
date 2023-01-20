@@ -27,14 +27,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check-out code
-        uses: actions/checkout@v3
-      - name: Documentation
-        run: |
-          dir -al
-          cd ..
-          dir -al
-#          git clone https://${GH_REPO_DEST}
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby
+        with:
+          ruby-version: '3.1'
+
+      - name: Install bundler
+        run: bundle install
+
+#      - name: Documentation
+#        run: |
+#          cd ..
+#          git clone https://${GH_REPO_DEST}  #
 #          git clone https://${GH_REPO_CONSOLIDATE}
 #          yes | cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
 #          cd ${REPO_DEST}
