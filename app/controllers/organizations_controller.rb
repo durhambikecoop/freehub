@@ -60,7 +60,8 @@ class OrganizationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organization
-      @organization = Organization.find(params[:id])
+      @organization = Organization.find_by_slug(params[:id])
+      raise ActionController::RoutingError, 'Not Found' unless @organization
     end
 
     # Only allow a list of trusted parameters through.

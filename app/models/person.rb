@@ -6,4 +6,8 @@ class Person < ApplicationRecord
   has_many :notes, through: :people_notes, dependent: :destroy
 
   acts_as_taggable
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end

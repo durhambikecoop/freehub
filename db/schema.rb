@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
-    t.check_constraint "slug::text ~* '^[a-z0-9_-]{3,20}$'::text", name: "valid_slug"
+    t.check_constraint "slug::text ~* '^[a-z0-9_-]{3,5}$'::text", name: "valid_slug"
   end
 
   create_table "people", force: :cascade do |t|
