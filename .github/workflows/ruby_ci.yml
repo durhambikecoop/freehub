@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: github actions for devon4j
+name: Github actions for DBC Freehub
 env:
   ORG: "durhambikecoop"
   REPO_SOURCE: "freehub"
@@ -62,8 +62,8 @@ jobs:
             echo ${EMAIL}
             echo ${USER}
             echo "Configure Git"
-            git config user.name ${USER}
-            git config user.email ${EMAIL}
+            git config user.name ${USER} --verbose
+            git config user.email ${EMAIL} --verbose
             echo "Get Git status"
             git status
             echo "Git status sucessful"
