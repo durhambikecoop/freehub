@@ -46,7 +46,7 @@ jobs:
       - name: Documentation
         run: |
           cd ..
-          git clone https://{$GH_REPO_DEST} --verbose
+          git clone https://${GH_REPO_DEST} --verbose
 #          git clone https://${GH_REPO_CONSOLIDATE}
 #          yes | cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
 #          cd ${REPO_DEST}
