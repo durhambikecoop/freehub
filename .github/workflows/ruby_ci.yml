@@ -59,14 +59,20 @@ jobs:
             echo "Differences"
             echo ${EMAIL}
             echo ${USER}
-            git config user.name ${USER} --verbose
+            git config user.name hughgs --verbose
             git config user.email ${EMAIL} --verbose
             echo "Get Git status"
             git status
-            echo "Got Git status"
+            echo "Git status sucessful"
+            echo "Add to Git"
             git add .
+            echo "Git add successful"
+            echo "Commit to Git"
             git commit -m "${REPO_SOURCE} ${DOC_DIR}"  # | Travis CI build number $TRAVIS_BUILD_NUMBER"
+            echo "Git commit successful"
+            echo "Create branch origin-wiki from remote"
             git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST}"
+            echo "Branch creation successful"
             git push origin-wiki master
             cd ../${REPO_CONSOLIDATE}
             if [ ! -d ${REPO_DEST} ]; then git submodule add https://${GH_REPO_DEST}; fi;
