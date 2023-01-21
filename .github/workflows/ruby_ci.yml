@@ -41,14 +41,18 @@ jobs:
 
       - name: Documentation
         run: |
+          # Copy files from dest to consolidation
           cd ..
+          ls -al
           git clone https://${GH_REPO_DEST} --verbose
           ls -al
           git clone https://${GH_REPO_CONSOLIDATE} --verbose
           ls -al
+          echo ${REPO_SOURCE}/${DOC_DIR}
+          ls -al ${REPO_SOURCE}/${DOC_DIR}
           cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
           cd ${REPO_DEST}
-          # Rename .asciidoc to .md
+          # Use .md instead of .asciidoc to .md
           grep -lr "link:[a-zA-Z0-9_.-]*.md.*" .| xargs -r sed -i "s/.md//g"
 
           if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then
