@@ -43,13 +43,9 @@ jobs:
         run: |
           # Copy files from dest to consolidation
           cd ..
-          ls -al
           git clone https://${GH_REPO_DEST} --verbose
-          ls -al
           git clone https://${GH_REPO_CONSOLIDATE} --verbose
-          ls -al
           cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
-          ls -al ${REPO_DEST}
           cd ${REPO_DEST}
           # Use .md instead of .asciidoc to .md
           grep -lr "link:[a-zA-Z0-9_.-]*.md.*" .| xargs -r sed -i "s/.md//g"
@@ -61,6 +57,8 @@ jobs:
             exit 0
           else
             echo "Differences"
+            echo ${EMAIL}
+            echo ${USER}
             git config user.email ${EMAIL}
             git config user.name ${USER}
             git status
