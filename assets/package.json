@@ -4,14 +4,18 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.2.1",
     "@hotwired/turbo-rails": "^7.2.4",
-    "esbuild": "^0.17.2"
+    "esbuild": "^0.17.3"
   },
   "scripts": {
     "js": "esbuild src/index.js --bundle --sourcemap --outdir=../app/assets/builds --public-path=assets",
+    "css": "npx tailwindcss -i ./src/styles.css -o ../app/assets/builds/index.css --minify",
     "watch:js": "nodemon -e js -x 'npm run js'",
-    "watch": "npm run watch:js"
+    "watch:css": "npx tailwindcss -i ./src/styles.css -o ../app/assets/builds/index.css --watch",
+    "watch": "npm run watch:js & npm run watch:css"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "@tailwindcss/forms": "^0.5.3",
+    "nodemon": "^2.0.20",
+    "tailwindcss": "^3.2.4"
   }
 }

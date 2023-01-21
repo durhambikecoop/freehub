@@ -1,5 +1,6 @@
 class Organizations::ServicesController < OrganizationController
   before_action :set_service, only: %i[ show edit update destroy ]
+  before_action :set_page_title
 
   # GET /services or /services.json
   def index
@@ -66,5 +67,9 @@ class Organizations::ServicesController < OrganizationController
     # Only allow a list of trusted parameters through.
     def service_params
       params.require(:service).permit(:start_date, :end_date, :paid, :volunteered, :service_type, :note_id, :person_id)
+    end
+
+    def set_page_title
+      @page_title = 'Services'
     end
 end

@@ -1,5 +1,6 @@
 class OrganizationController < ApplicationController
   before_action :set_organization
+  layout 'organization'
 
   private
 

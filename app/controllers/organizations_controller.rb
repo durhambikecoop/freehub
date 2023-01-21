@@ -3,33 +3,36 @@ class OrganizationsController < ApplicationController
 
   # GET /organizations or /organizations.json
   def index
-    @organizations = Organization.all
+    @orgs = Organization.all
   end
 
   # GET /organizations/1 or /organizations/1.json
   def show
+    # set layout to organization
+    render layout: 'organization'
   end
 
   # GET /organizations/new
   def new
-    @organization = Organization.new
+    @org = Organization.new
   end
 
   # GET /organizations/1/edit
   def edit
+    render layout: 'organization'
   end
 
   # POST /organizations or /organizations.json
   def create
-    @organization = Organization.new(organization_params)
+    @org = Organization.new(organization_params)
 
     respond_to do |format|
-      if @organization.save
-        format.html { redirect_to organization_url(@organization), notice: "Organization was successfully created." }
-        format.json { render :show, status: :created, location: @organization }
+      if @org.save
+        format.html { redirect_to organization_url(@org), notice: "Organization was successfully created." }
+        format.json { render :show, status: :created, location: @org }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
+        format.json { render json: @org.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -37,19 +40,19 @@ class OrganizationsController < ApplicationController
   # PATCH/PUT /organizations/1 or /organizations/1.json
   def update
     respond_to do |format|
-      if @organization.update(organization_params)
-        format.html { redirect_to organization_url(@organization), notice: "Organization was successfully updated." }
-        format.json { render :show, status: :ok, location: @organization }
+      if @org.update(organization_params)
+        format.html { redirect_to organization_url(@org), notice: "Organization was successfully updated." }
+        format.json { render :show, status: :ok, location: @org }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
+        format.json { render json: @org.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /organizations/1 or /organizations/1.json
   def destroy
-    @organization.destroy
+    @org.destroy
 
     respond_to do |format|
       format.html { redirect_to organizations_url, notice: "Organization was successfully destroyed." }
@@ -60,8 +63,8 @@ class OrganizationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organization
-      @organization = Organization.find_by_slug(params[:id])
-      raise ActionController::RoutingError, 'Not Found' unless @organization
+      @org = Organization.find_by_slug(params[:id])
+      raise ActionController::RoutingError, 'Not Found' unless @org
     end
 
     # Only allow a list of trusted parameters through.

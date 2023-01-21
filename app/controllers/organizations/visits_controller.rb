@@ -1,5 +1,6 @@
 class Organizations::VisitsController < OrganizationController
   before_action :set_visit, only: %i[ show edit update destroy ]
+  before_action :set_page_title
 
   # GET /visits or /visits.json
   def index
@@ -66,5 +67,9 @@ class Organizations::VisitsController < OrganizationController
     # Only allow a list of trusted parameters through.
     def visit_params
       params.require(:visit).permit(:note_id, :volunteer, :arrived_at, :start_at, :end_at)
+    end
+
+    def set_page_title
+      @page_title = 'Visits'
     end
 end

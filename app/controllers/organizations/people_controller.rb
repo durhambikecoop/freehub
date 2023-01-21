@@ -1,5 +1,6 @@
 class Organizations::PeopleController < OrganizationController
   before_action :set_person, only: %i[ show edit update destroy ]
+  before_action :set_page_title
 
   # GET /people or /people.json
   def index
@@ -66,5 +67,9 @@ class Organizations::PeopleController < OrganizationController
     # Only allow a list of trusted parameters through.
     def person_params
       params.require(:person).permit(:first_name, :last_name, :country, :address, :email, :email_opt_out, :phone, :organization_id)
+    end
+
+    def set_page_title
+      @page_title = 'People'
     end
 end

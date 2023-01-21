@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class OrganizationsTest < ApplicationSystemTestCase
   setup do
-    @organization = organizations(:one)
+    @org = organizations(:one)
   end
 
   test "visiting the index" do
@@ -14,10 +14,10 @@ class OrganizationsTest < ApplicationSystemTestCase
     visit organizations_url
     click_on "New organization"
 
-    fill_in "Location", with: @organization.location
-    fill_in "Name", with: @organization.name
-    fill_in "Slug", with: @organization.slug
-    fill_in "Timezone", with: @organization.timezone
+    fill_in "Location", with: @org.location
+    fill_in "Name", with: @org.name
+    fill_in "Slug", with: @org.slug
+    fill_in "Timezone", with: @org.timezone
     click_on "Create Organization"
 
     assert_text "Organization was successfully created"
@@ -25,13 +25,13 @@ class OrganizationsTest < ApplicationSystemTestCase
   end
 
   test "should update Organization" do
-    visit organization_url(@organization)
+    visit organization_url(@org)
     click_on "Edit this organization", match: :first
 
-    fill_in "Location", with: @organization.location
-    fill_in "Name", with: @organization.name
-    fill_in "Slug", with: @organization.slug
-    fill_in "Timezone", with: @organization.timezone
+    fill_in "Location", with: @org.location
+    fill_in "Name", with: @org.name
+    fill_in "Slug", with: @org.slug
+    fill_in "Timezone", with: @org.timezone
     click_on "Update Organization"
 
     assert_text "Organization was successfully updated"
@@ -39,7 +39,7 @@ class OrganizationsTest < ApplicationSystemTestCase
   end
 
   test "should destroy Organization" do
-    visit organization_url(@organization)
+    visit organization_url(@org)
     click_on "Destroy this organization", match: :first
 
     assert_text "Organization was successfully destroyed"
