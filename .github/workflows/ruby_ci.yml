@@ -43,7 +43,9 @@ jobs:
         run: |
           cd ..
           git clone https://${GH_REPO_DEST} --verbose
-          git clone https://${GH_REPO_CONSOLIDATE}
+          ls -al
+          git clone https://${GH_REPO_CONSOLIDATE} --verbose
+          ls -al
           cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
           cd ${REPO_DEST}
           # Rename .asciidoc to .md
