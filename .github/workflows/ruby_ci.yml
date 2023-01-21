@@ -40,6 +40,8 @@ jobs:
             bundler-cache: true
 
       - name: Documentation
+        env:
+          USER: hughgs
         run: |
           # Copy files from dest to consolidation
           cd ..
@@ -59,7 +61,8 @@ jobs:
             echo "Differences"
             echo ${EMAIL}
             echo ${USER}
-            git config user.name hughgs
+            echo "Configure Git"
+            git config user.name ${USER}
             git config user.email ${EMAIL}
             echo "Get Git status"
             git status
