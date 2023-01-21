@@ -59,8 +59,8 @@ jobs:
             echo "Differences"
             echo ${EMAIL}
             echo ${USER}
-            git config user.email ${EMAIL}
-            git config user.name ${USER}
+            git config user.name ${USER} --verbose
+            git config user.email ${EMAIL} --verbose
             echo "Get Git status"
             git status
             echo "Got Git status"
