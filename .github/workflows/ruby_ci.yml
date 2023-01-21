@@ -8,7 +8,7 @@ env:
   ORG_CONSOLIDATE: "devonfw"
   REPO_CONSOLIDATE: "devonfw-guide"
   GH_REPO_SOURCE: "github.com/${ORG}/${REPO_SOURCE}.git"
-  GH_REPO_DEST:  "github.com/${ORG}/${REPO_DEST}.git"
+  GH_REPO_DEST:  "github.com/$ORG/$REPO_DEST.git"
   GH_REPO_CONSOLIDATE: "github.com/${ORG_CONSOLIDATE}/${REPO_CONSOLIDATE}.git"
   # Add variable for the documentation folder
   DOC_DIR: "doc"
