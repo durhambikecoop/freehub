@@ -61,7 +61,9 @@ jobs:
             echo ${USER}
             git config user.email ${EMAIL}
             git config user.name ${USER}
+            echo "Get Git status"
             git status
+            echo "Got Git status"
             git add .
             git commit -m "${REPO_SOURCE} ${DOC_DIR}"  # | Travis CI build number $TRAVIS_BUILD_NUMBER"
             git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST}"
