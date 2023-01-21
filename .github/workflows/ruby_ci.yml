@@ -30,9 +30,9 @@ jobs:
       - name: Define repositories
         run: |
           echo ${ORG}
-          echo GH_REPO_SOURCE=github.com/${ORG}/${REPO_SOURCE}.git
-          echo GH_REPO_DEST=github.com/${ORG}/${REPO_DEST}.git
-          echo GH_REPO_CONSOLIDATE=github.com/${ORG_CONSOLIDATE}/${REPO_CONSOLIDATE}.git
+          echo GH_REPO_SOURCE=github.com/${ORG}/${REPO_SOURCE}.git >> $GITHUB_ENV
+          echo GH_REPO_DEST=github.com/${ORG}/${REPO_DEST}.git >> $GITHUB_ENV
+          echo GH_REPO_CONSOLIDATE=github.com/${ORG_CONSOLIDATE}/${REPO_CONSOLIDATE}.git >> $GITHUB_ENV
 
       - name: Set up Ruby 3.2 and dependencies
         uses: ruby/setup-ruby@v1
