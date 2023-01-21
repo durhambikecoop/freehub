@@ -48,9 +48,8 @@ jobs:
           ls -al
           git clone https://${GH_REPO_CONSOLIDATE} --verbose
           ls -al
-          echo ${REPO_SOURCE}/${DOC_DIR}
-          ls -al ${REPO_SOURCE}/${DOC_DIR}
           cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
+          ls -al ${REPO_DEST}
           cd ${REPO_DEST}
           # Use .md instead of .asciidoc to .md
           grep -lr "link:[a-zA-Z0-9_.-]*.md.*" .| xargs -r sed -i "s/.md//g"
