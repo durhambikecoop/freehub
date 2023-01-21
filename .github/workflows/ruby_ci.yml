@@ -48,7 +48,7 @@ jobs:
           cd ${REPO_DEST}
           # Rename .asciidoc to .md
           grep -lr "link:[a-zA-Z0-9_.-]*.md.*" .| xargs -r sed -i "s/.md//g"
-          |
+
           if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then
             set +e
             pkill -9 -P $$ &> /dev/null || true
