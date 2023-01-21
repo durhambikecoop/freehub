@@ -59,8 +59,8 @@ jobs:
             echo "Differences"
             echo ${EMAIL}
             echo ${USER}
-            git config user.name hughgs --verbose
-            git config user.email ${EMAIL} --verbose
+            git config user.name hughgs
+            git config user.email ${EMAIL}
             echo "Get Git status"
             git status
             echo "Git status sucessful"
@@ -74,7 +74,7 @@ jobs:
             git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST}"
             echo "Branch creation successful"
             echo "Push branch origin-wiki to master"
-            git push origin-wiki master
+            git push origin-wiki master --verbose
             echo "Push successful"
             cd ../${REPO_CONSOLIDATE}
             if [ ! -d ${REPO_DEST} ]; then git submodule add https://${GH_REPO_DEST}; fi;
