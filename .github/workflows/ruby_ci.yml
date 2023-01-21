@@ -73,7 +73,9 @@ jobs:
             echo "Create branch origin-wiki from remote"
             git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST}"
             echo "Branch creation successful"
+            echo "Push branch origin-wiki to master"
             git push origin-wiki master
+            echo "Push successful"
             cd ../${REPO_CONSOLIDATE}
             if [ ! -d ${REPO_DEST} ]; then git submodule add https://${GH_REPO_DEST}; fi;
             git submodule init
