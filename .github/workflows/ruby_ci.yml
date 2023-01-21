@@ -29,9 +29,10 @@ jobs:
 
       - name: Define repositories
         run: |
-          GH_REPO_SOURCE="github.com/${ORG}/${REPO_SOURCE}.git"
-          GH_REPO_DEST="github.com/${ORG}/${REPO_DEST}.git"
-          GH_REPO_CONSOLIDATE="github.com/${ORG_CONSOLIDATE}/${REPO_CONSOLIDATE}.git"
+          echo "GLOBAL_VERSION=${MAJOR}.${MINOR}.${PATCH}" >> $GITHUB_ENV
+          echo "GH_REPO_SOURCE="github.com/${ORG}/${REPO_SOURCE}.git" >> $GITHUB_ENV
+          echo "GH_REPO_DEST="github.com/${ORG}/${REPO_DEST}.git" >> $GITHUB_ENV
+          echo "GH_REPO_CONSOLIDATE="github.com/${ORG_CONSOLIDATE}/${REPO_CONSOLIDATE}.git"
 
       - name: Set up Ruby 3.2 and dependencies
         uses: ruby/setup-ruby@v1
@@ -46,6 +47,7 @@ jobs:
       - name: Documentation
         run: |
           cd ..
+          echo ${GH_REPO_DEST}
           git clone https://${GH_REPO_DEST} --verbose
 #          git clone https://${GH_REPO_CONSOLIDATE}
 #          yes | cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
