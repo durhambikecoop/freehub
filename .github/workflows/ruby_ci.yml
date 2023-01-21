@@ -43,7 +43,7 @@ jobs:
 #        run: |
 #          bundle exec rake
 
-      - name: Documentation ${{env.GH_REPO_SOURCE}}
+      - name: Documentation ${GH_REPO_SOURCE}
         run: |
           cd ..
           git clone https://$GH_REPO_DEST --verbose
