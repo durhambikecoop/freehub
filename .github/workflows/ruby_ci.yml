@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_REPO_SOURCE: "github.com/${ORG}/${REPO_SOURCE}.git"
-      GH_REPO_DEST:  "github.com/$ORG/$REPO_DEST.git"
+      GH_REPO_DEST:  "github.com/${ORG}/${REPO_DEST}.git"
       GH_REPO_CONSOLIDATE: "github.com/${ORG_CONSOLIDATE}/${REPO_CONSOLIDATE}.git"
 
 
