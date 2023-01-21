@@ -55,10 +55,12 @@ jobs:
           grep -lr "link:[a-zA-Z0-9_.-]*.md.*" .| xargs -r sed -i "s/.md//g"
 
           if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then
+            echo "No differences"
             set +e
             pkill -9 -P $$ &> /dev/null || true
             exit 0
           else
+            echo "Differences"
             git config user.email ${EMAIL}
             git config user.name ${USER}
             git status
