@@ -67,9 +67,10 @@ jobs:
             echo "Get Git status"
             git status
             echo "Git status sucessful"
-            echo "Add to Git"
+            echo "Stage files"
             git add .
             echo "Git add successful"
+            git status
             echo "Commit to Git"
             git commit -m "${REPO_SOURCE} ${DOC_DIR}"  # | Travis CI build number $TRAVIS_BUILD_NUMBER"
             echo "Git commit successful"
