@@ -1,0 +1,98 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Github actions for DBC Freehub Wiki
+env:
+  ORG: "durhambikecoop"
+  REPO_SOURCE: "freehub"
+  REPO_DEST: "freehub.wiki"
+  ORG_CONSOLIDATE: "devonfw"
+  REPO_CONSOLIDATE: "devonfw-guide"
+  # Add variable for the documentation folder
+  DOC_DIR: "doc"
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow when the pull request is closed (merge/close)
+  pull_request_target:
+    types:
+      - closed
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "copy_wiki"
+  copy_wiki:
+    # Trigger when pull request is merged
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Define repositories
+        run: |
+          echo GH_REPO_SOURCE=github.com/${ORG}/${REPO_SOURCE}.git >> $GITHUB_ENV
+          echo GH_REPO_DEST=github.com/${ORG}/${REPO_DEST}.git >> $GITHUB_ENV
+          echo GH_REPO_CONSOLIDATE=github.com/${ORG_CONSOLIDATE}/${REPO_CONSOLIDATE}.git >> $GITHUB_ENV
+
+      - name: Set up Ruby 3.2 and dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+            ruby-version: "3.2"
+            bundler-cache: true
+
+      - name: Documentation
+        env:
+          USER: hughgs
+        run: |
+          # Copy files from dest to consolidation
+          cd ..
+          git clone https://${GH_REPO_DEST} --verbose
+          git clone https://${GH_REPO_CONSOLIDATE} --verbose
+          cp -rf ${REPO_SOURCE}/${DOC_DIR}/* ${REPO_DEST}/
+          cd ${REPO_DEST}
+          # Use .md instead of .asciidoc to .md
+          grep -lr "link:[a-zA-Z0-9_.-]*.md.*" .| xargs -r sed -i "s/.md//g"
+
+          if git diff-index --quiet HEAD && [ ! -n "$(git status -s)" ]; then
+            echo "No differences"
+            set +e
+            pkill -9 -P $$ &> /dev/null || true
+            exit 0
+          else
+            echo "Differences"
+            echo ${EMAIL}
+            echo ${USER}
+            echo "Configure Git"
+            git config user.name ${USER} --verbose
+            git config user.email ${EMAIL} --verbose
+            echo "Get Git status"
+            git status
+            echo "Git status sucessful"
+            echo "Stage files"
+            git add .
+            echo "Git add successful"
+            git status
+            echo "Commit to Git"
+            git commit -m "${REPO_SOURCE} ${DOC_DIR}"  # | Travis CI build number $TRAVIS_BUILD_NUMBER"
+            echo "Git commit successful"
+            echo "Create branch origin-wiki from remote"
+            git remote add origin-wiki https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST}
+            echo "Branch creation successful"
+            git remote -v
+            git branch
+            echo "Push local master to remote origin-wiki"
+            git push https://${USER}:${GITHUB_TOKEN}@${GH_REPO_DEST} master --verbose
+            echo "Push successful"
+            cd ../${REPO_CONSOLIDATE}
+            if [ ! -d ${REPO_DEST} ]; then git submodule add https://${GH_REPO_DEST}; fi;
+            git submodule init
+            git submodule update --recursive --remote
+            cd ${REPO_DEST}
+            git checkout master
+            git pull
+            cd ..
+            git add .
+            git commit -m "${REPO_SOURCE} ${DOC_DIR}"  # | Travis CI build number $TRAVIS_BUILD_NUMBER"
+            git remote add origin-wiki "https://${USER}:${GITHUB_TOKEN}@${GH_REPO_CONSOLIDATE}"
+            git push origin-wiki master
+          fi
