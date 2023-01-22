@@ -24,5 +24,5 @@ jobs:
       - name: "Set up Ruby ${{env.RUBY_VER}} and dependencies"
         uses: ruby/setup-ruby@v1
         with:
-            ruby-version: ${RUBY_VER}
+            ruby-version: ${{env.RUBY_VER}}
             bundler-cache: true
