@@ -6,11 +6,16 @@ ruby "3.2.0"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4"
 
+# Active Record extension for grouping by date and times
+gem 'groupdate', '~> 6.1'
+
 # Authentication solution for Rails
 gem 'devise', '~> 4.8', '>= 4.8.1'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
+
+gem 'vite_rails', '~> 3.0', '>= 3.0.13'
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
@@ -26,6 +31,9 @@ gem "turbo-rails"
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
+
+# Github's component framework for Rails [https://viewcomponent.org]
+gem 'view_component', '~> 2.82'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"

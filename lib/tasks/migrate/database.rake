@@ -113,7 +113,6 @@ class DatabaseTasks
     User.transaction do
       puts "Migrating #{OldFreehubData::User.count} users..."
       OldFreehubData::User.find_each do |old_user|
-        user = User.new
         User.create!(
           id: old_user.id,
           email: old_user.email,
@@ -122,6 +121,7 @@ class DatabaseTasks
           created_at: old_user.created_at,
           password: SecureRandom.hex(16)
         )
+        User.find(old_user.id).confirm
       end
     end
   end

@@ -33,6 +33,7 @@
 !/tmp/storage/.keep
 
 /public/assets
+/public/manifest.json
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

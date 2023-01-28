@@ -5,8 +5,14 @@ Rails.application.routes.draw do
   # :organization_id/:controller routes
   # org ids are slugs and must be 3-5 numerical, lowercase, underscore, or dash characters
   resources :organizations, only: %i[show destroy update edit], path: '', id: /[a-z0-9_-]{3,5}/ do
-    resources :people, :services, :visits, module: :organizations, id: /\d+/
+    scope module: :organizations do
+      resources :visits, id: /\d+/
+      resources :people, id: /\d+/
+      resources :reports, id: /\d+/
+    end
   end
+
+  root to: 'home#index'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

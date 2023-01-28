@@ -5,6 +5,10 @@ class Organizations::PeopleController < OrganizationController
   # GET /people or /people.json
   def index
     @people = @org.people
+    #Only respond to json requests
+    respond_to do |format|
+      format.json { render json: @people }
+    end
   end
 
   # GET /people/1 or /people/1.json

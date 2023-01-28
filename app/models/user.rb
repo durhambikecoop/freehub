@@ -7,4 +7,8 @@ class User < ApplicationRecord
 
   has_many :roles, class_name: 'UserOrganizationRole', dependent: :destroy
   has_many :organizations, through: :roles
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end

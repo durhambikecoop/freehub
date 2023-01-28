@@ -4,7 +4,11 @@ class Organizations::VisitsController < OrganizationController
 
   # GET /visits or /visits.json
   def index
-    @visits = @org.visits
+    # Parse date from params
+    #   * If no date is provided, use today
+    @current_date = params.key?(:date) ? Date.parse(params[:date]) : Date.today
+    @next_date = @org.visits.where.not(start_at: nil).where(start_at: ..@current_date).order(:start_at).last.start_at.to_date
+    @visits = @org.visits.where(start_at: @current_date.beginning_of_day..@current_date.end_of_day)
   end
 
   # GET /visits/1 or /visits/1.json

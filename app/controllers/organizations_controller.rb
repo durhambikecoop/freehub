@@ -1,4 +1,5 @@
 class OrganizationsController < ApplicationController
+  before_action :authenticate_user!, except: :index
   before_action :set_organization, only: %i[ show edit update destroy ]
 
   # GET /organizations or /organizations.json
@@ -8,6 +9,8 @@ class OrganizationsController < ApplicationController
 
   # GET /organizations/1 or /organizations/1.json
   def show
+    @page_title = 'Home'
+
     # set layout to organization
     render layout: 'organization'
   end
@@ -19,6 +22,8 @@ class OrganizationsController < ApplicationController
 
   # GET /organizations/1/edit
   def edit
+    @page_title = 'Settings'
+
     render layout: 'organization'
   end
 
@@ -63,7 +68,7 @@ class OrganizationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organization
-      @org = Organization.find_by_slug(params[:id])
+      @org = current_user.organizations.find_by_slug(params[:id])
       raise ActionController::RoutingError, 'Not Found' unless @org
     end
 
