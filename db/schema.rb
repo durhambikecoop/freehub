@@ -10,15 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  # Custom types defined in this database.
-  # Note that some types may not work with other database engines. Be careful if changing database.
-  create_enum "role", ["manager", "member", "client"]
-
-  create_table "notes", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2023_01_20_175836) do
+  create_table "notes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "body"
     t.bigint "created_by_user_id", null: false
     t.bigint "updated_by_user_id", null: false
@@ -28,7 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.index ["updated_by_user_id"], name: "index_notes_on_updated_by_user_id"
   end
 
-  create_table "organizations", force: :cascade do |t|
+  create_table "organizations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
     t.string "location", null: false
@@ -36,15 +29,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
-    t.check_constraint "slug::text ~* '^[a-z0-9_-]{3,5}$'::text", name: "valid_slug"
+    t.check_constraint "`slug` regexp '^[a-z0-9_-]{3,5}$'", name: "valid_slug"
   end
 
-  create_table "people", force: :cascade do |t|
+  create_table "people", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "first_name", null: false
     t.text "last_name", null: false
     t.integer "birth_year"
     t.text "country", null: false
-    t.jsonb "address", default: {}, null: false
+    t.text "address", size: :long, default: "{}", null: false, collation: "utf8mb4_bin"
     t.text "email", null: false
     t.text "phone"
     t.boolean "email_opt_out", default: false, null: false
@@ -54,22 +47,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_user_id"], name: "index_people_on_created_by_user_id"
-    t.index ["email", "organization_id"], name: "index_people_on_email_and_organization_id", unique: true
+    t.index ["email", "organization_id"], name: "index_people_on_email_and_organization_id", unique: true, using: :hash
     t.index ["organization_id"], name: "index_people_on_organization_id"
-    t.index ["phone", "organization_id"], name: "index_people_on_phone_and_organization_id", unique: true
+    t.index ["phone", "organization_id"], name: "index_people_on_phone_and_organization_id", unique: true, using: :hash
     t.index ["updated_by_user_id"], name: "index_people_on_updated_by_user_id"
-    t.check_constraint "birth_year >= 1920 AND birth_year::double precision <= date_part('year'::text, now())", name: "valid_birth_year"
-    t.check_constraint "country ~* '^[A-Z]{2}$'::text", name: "valid_country"
+    t.check_constraint "`birth_year` >= 1920", name: "valid_birth_year"
+    t.check_constraint "`country` regexp '^[A-Z]{2}$'", name: "valid_country"
+    t.check_constraint "json_valid(`address`)", name: "address"
   end
 
-  create_table "people_notes", force: :cascade do |t|
+  create_table "people_notes", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "person_id", null: false
     t.bigint "note_id", null: false
     t.index ["note_id"], name: "index_people_notes_on_note_id"
     t.index ["person_id"], name: "index_people_notes_on_person_id"
   end
 
-  create_table "services", force: :cascade do |t|
+  create_table "services", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.boolean "paid", default: false, null: false
@@ -89,7 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.index ["updated_by_user_id"], name: "index_services_on_updated_by_user_id"
   end
 
-  create_table "taggings", force: :cascade do |t|
+  create_table "taggings", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "taggable_type"
     t.bigint "taggable_id"
@@ -97,22 +91,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.bigint "tagger_id"
     t.string "context", limit: 128
     t.datetime "created_at", precision: nil
-    t.string "tenant", limit: 128
-    t.index ["context"], name: "index_taggings_on_context"
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
     t.index ["taggable_id", "taggable_type", "context"], name: "taggings_taggable_context_idx"
-    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
-    t.index ["taggable_id"], name: "index_taggings_on_taggable_id"
     t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id"
-    t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
-    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
-    t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
     t.index ["tagger_type", "tagger_id"], name: "index_taggings_on_tagger_type_and_tagger_id"
-    t.index ["tenant"], name: "index_taggings_on_tenant"
   end
 
-  create_table "tags", force: :cascade do |t|
+  create_table "tags", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -120,10 +106,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "user_organization_roles", force: :cascade do |t|
+  create_table "user_organization_roles", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "organization_id", null: false
-    t.enum "role", null: false, enum_type: "role"
+    t.text "role", default: "member", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_user_organization_roles_on_organization_id"
@@ -131,7 +117,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.index ["user_id"], name: "index_user_organization_roles_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "first_name", null: false
     t.text "last_name", null: false
     t.boolean "admin", default: false
@@ -156,7 +142,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_20_175840) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "visits", force: :cascade do |t|
+  create_table "visits", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.boolean "volunteer"
     t.datetime "arrived_at"
     t.datetime "start_at"

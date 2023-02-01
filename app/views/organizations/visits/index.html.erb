@@ -1,4 +1,7 @@
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-1 gap-4 p-4">
+  <div>
+    <%= render Organizations::PersonCheckInComponent.new(org: @org) %>
+  </div>
   <%= turbo_frame_tag 'visits' do %>
     <h1 class="text-xl text-gray-700 py-2">
       There are <%= @visits.count %> people in the shop on <%= @current_date.strftime("%A, %B %d, %Y") %>
@@ -13,7 +16,4 @@
       <%= render Organizations::Visits::VisitComponent.with_collection(@visits) %>
     </div>
   <% end %>
-  <div>
-    <%= render Organizations::PersonCheckInComponent.new(org: @org) %>
-  </div>
 </div>

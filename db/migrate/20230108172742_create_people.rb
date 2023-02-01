@@ -5,7 +5,7 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.text :last_name, null: false
       t.integer :birth_year, null: true
       t.text :country, null: false
-      t.jsonb :address, null: false, default: {}
+      t.json :address, null: false, default: {}
       t.text :email, null: false
       t.text :phone, null: true
       t.boolean :email_opt_out, null: false, default: false
@@ -17,10 +17,10 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.index %i[phone organization_id], unique: true
 
       # Validate that the country is a valid 3166 country code (alpha 2)
-      t.check_constraint "country ~* '^[A-Z]{2}$'", name: 'valid_country'
+      t.check_constraint "country RLIKE'^[A-Z]{2}$'", name: 'valid_country'
 
       # Validate that the birth year is a valid year
-      t.check_constraint "birth_year >= 1920 AND birth_year <= date_part('year', now())", name: 'valid_birth_year'
+      t.check_constraint "birth_year >= 1920", name: 'valid_birth_year'
 
       t.timestamps
     end

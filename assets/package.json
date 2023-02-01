@@ -2,25 +2,18 @@
   "name": "app",
   "private": "true",
   "dependencies": {
-    "@alpinejs/persist": "^3.11.1",
-    "@hotwired/stimulus": "^3.2.1",
     "@hotwired/turbo-rails": "^7.2.4",
-    "alpine-turbo-drive-adapter": "^2.0.0",
-    "alpinejs": "^3.11.1",
-    "esbuild": "^0.17.3",
-    "firacode": "^6.2.0"
+    "@rails/ujs": "^7.0.4-2",
+    "firacode": "^6.2.0",
+    "lit": "^2.6.1"
   },
   "scripts": {
-    "js": "node build.esbuild.js",
-    "css": "npx tailwindcss -i ./src/styles.css -o ../app/assets/builds/index.css --minify",
-    "watch:js": "nodemon -e js -x 'npm run js'",
-    "watch:css": "npx tailwindcss -i ./src/styles.css -o ../app/assets/builds/index.css --watch",
-    "watch": "vite -c vite.config.js --mode development build"
+    "watch": "vite -c vite.config.js --mode development build -w",
+    "build": "vite -c vite.config.js --mode production build",
+    "prewatch": "find ../public/assets -type f -regex '.*\\(css\\|js\\)' -delete"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
-    "esbuild-plugin-import-glob": "^0.1.1",
-    "nodemon": "^2.0.20",
     "tailwindcss": "^3.2.4",
     "vite": "^4.0.4"
   }

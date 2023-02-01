@@ -6,8 +6,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "index", "data-turbo-track": "reload" %>
-    <%= javascript_include_tag "index", "data-turbo-track": "reload", defer: true %>
+    <%= vite_javascript_tag 'index' %>
   </head>
 
   <body class="bg-stone-50">
