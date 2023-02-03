@@ -1,0 +1,55 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Github actions for DBC Freehub Wiki
+env:
+  ORG: "durhambikecoop"
+  REPO_SOURCE: "freehub"
+  DIR_SRC: source-repo
+  DIR_WIKI: wiki-repo
+  DOC_DIR: "doc/wiki"
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow when the pull request is closed (merge/close)
+  pull_request_target:
+    types:
+      - closed
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "copy_wiki"
+  copy_wiki:
+    # Trigger when pull request is merged
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v3
+        with:
+          path: ./${{ env.DIR_SRC }}
+
+      - name: Checkout wiki repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.ORG }}/${{ env.REPO_SOURCE }}.wiki
+          # Define WIKI token on Github
+          token: ${{ secrets.WIKI_TOKEN }}
+          path: ./${{ env.DIR_WIKI }}
+
+      - name: Copy files
+        run: |
+          echo "Copying files"
+          cp -rf ./${DIR_SRC}/${DOC_DIR}/* ./${DIR_WIKI}
+
+      - name: Push Wiki
+        run: |
+          cd ./${DIR_WIKI}
+          # Stage
+          git add .
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          # Commit
+          git commit -am "Wiki copied"
+          # Push
+          git push
