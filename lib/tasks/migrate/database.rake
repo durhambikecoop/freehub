@@ -152,10 +152,7 @@ class DatabaseTasks
       OldFreehubData::Person.find_each do |old_person|
         organization = Organization.find_by_slug(old_person.organization.key)
 
-        unless (email = old_person.email).present?
-          # If the person doesn't have an email, generate a random one and remove whitespaces
-          email = "#{old_person.first_name}_#{old_person.last_name}_#{SecureRandom.hex(2)}@#{organization.slug}.com".gsub(/\s+/, '')
-        end
+        email = old_person.email.present? ? old_person.email : nil # If the person doesn't have an email, set it to nil so it doesn't fail validation
         phone = old_person.phone.present? ? old_person.phone : nil # If the person doesn't have a phone, set it to nil so it doesn't fail validation
 
         Person.create!(

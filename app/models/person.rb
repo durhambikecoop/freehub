@@ -6,7 +6,7 @@ class Person < ApplicationRecord
   has_many :notes, through: :people_notes, dependent: :destroy
   serialize :address, JSON
 
-  acts_as_taggable
+  # acts_as_taggable TODO - add this back in
 
   def full_name
     "#{first_name} #{last_name}"
