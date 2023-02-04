@@ -2,7 +2,6 @@ class Organizations::ReportsController < OrganizationController
   before_action :set_page_title
 
   def index() end
-  def show() end
 
   private
 
