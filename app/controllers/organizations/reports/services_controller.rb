@@ -1,7 +1,9 @@
 class Organizations::Reports::ServicesController < OrganizationController
   before_action :set_page_title
 
-  def index() end
+  def index
+    @services = @org.services
+  end
 
   def export() end
 

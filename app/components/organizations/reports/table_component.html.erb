@@ -1,0 +1,21 @@
+<% filters.each do |filter| %>
+  <%= filter %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <% @columns.each do |column| %>
+        <th><%= column[:name] %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @collection.each do |item| %>
+      <tr>
+        <% @columns.each do |column| %>
+          <td><%= column[:value].call(item) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+</table>

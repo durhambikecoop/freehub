@@ -1,0 +1,5 @@
+<%= render Organizations::Reports::TableComponent.new(columns: person_columns, collection: @people) do |component| %>
+  <% component.with_filter_text(label: 'Matching name', query: 'name', help_text: 'Match 3 or more letters in a person\'s first and last name.') %>
+  <% component.with_filter_choice(label: 'Type', query: 'service_type', options: [['All', 'all'], ['Staff', 'staff'], ['Patrons', 'patrons']]) %>
+  <% component.with_filter_date_range(label: 'Date Range', start_query: 'created_at', end_query: 'create_at', help_text: 'Leave one or both blank to search without date constraints.') %>
+<% end %>

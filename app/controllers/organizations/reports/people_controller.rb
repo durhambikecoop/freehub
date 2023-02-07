@@ -1,7 +1,9 @@
 class Organizations::Reports::PeopleController < OrganizationController
   before_action :set_page_title
 
-  def index() end
+  def index
+    @people = @org.people
+  end
 
   def export() end
 
