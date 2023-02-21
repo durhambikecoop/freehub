@@ -34,7 +34,7 @@ jobs:
         with:
           repository: ${{ env.ORG }}/${{ env.REPO_SOURCE }}.wiki
           # Define WIKI token on Github
-          token: ${{ secrets.WIKI_TOKEN }}
+          token: ${{ secrets.GH }}
           path: ./${{ env.DIR_WIKI }}
 
       - name: Copy files
