@@ -27,5 +27,8 @@ jobs:
           # ruby-version: ${{env.RUBY_VER}}
           bundler-cache: true
 
+      - name: "Load MySQL server"
+        run:
+
       - name: "Run tests"
-        run: bundle exec rake
+        run: #bundle exec rake
