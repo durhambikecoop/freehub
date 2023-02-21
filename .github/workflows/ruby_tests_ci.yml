@@ -8,9 +8,9 @@ name: Github actions for DBC Freehub testing
 on:
   # Triggers the workflow on a push/pull to the master branch
   push:
-    branches: [ master ]
+    branches: [ master, rails-latest ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, rails-latest ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
