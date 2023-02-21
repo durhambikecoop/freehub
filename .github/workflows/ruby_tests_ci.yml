@@ -28,7 +28,9 @@ jobs:
           bundler-cache: true
 
       - name: "Load MySQL server"
-        run:
+        run: echo Need to add MySQL server install commands
 
       - name: "Run tests"
-        run: #bundle exec rake
+        run: |
+          echo Uncomment below after MySQL server is installed
+          # bundle exec rake
