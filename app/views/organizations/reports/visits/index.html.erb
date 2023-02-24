@@ -1,3 +1,4 @@
 <%= render Organizations::Reports::TableComponent.new(columns: visit_columns, collection: @visits) do |component| %>
   <% component.with_filter_date_range(label: 'Date Range', start_query: 'end_date', end_query: 'start_date', help_text: 'Leave one or both blank to search without date constraints.') %>
+  <% component.with_pagination(pagination_attributes: @pagination, table_params: params.permit(:start_date, :end_date)) %>
 <% end %>

@@ -7,5 +7,4 @@ class Organizations::Reports::Table::DateRangeFilterComponent < ViewComponent::B
     @end_query = end_query
     @help_text = help_text
   end
-
 end

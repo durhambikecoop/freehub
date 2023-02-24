@@ -6,6 +6,7 @@ class Organizations::Reports::TableComponent < ViewComponent::Base
     date_range: Organizations::Reports::Table::DateRangeFilterComponent,
     choice: Organizations::Reports::Table::ChoiceFilterComponent
   }
+  renders_one :pagination, Organizations::Reports::Table::PaginationComponent
 
   def initialize(collection:, columns:)
     @collection = collection
