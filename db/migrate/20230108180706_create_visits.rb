@@ -1,7 +1,7 @@
 class CreateVisits < ActiveRecord::Migration[7.0]
   def change
     create_table :visits do |t|
-      t.boolean :volunteer
+      t.boolean :volunteer, null: false, default: false
       t.datetime :arrived_at
       t.datetime :start_at
       t.datetime :end_at

@@ -121,7 +121,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
   end
 
   create_table "visits", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.boolean "volunteer"
+    t.boolean "volunteer", default: false, null: false
     t.datetime "arrived_at"
     t.datetime "start_at"
     t.datetime "end_at"

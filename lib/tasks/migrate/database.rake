@@ -193,8 +193,10 @@ class DatabaseTasks
           created_at: old_visit.created_at,
           updated_by_user_id: old_visit.updated_by_id,
           created_by_user_id: old_visit.created_by_id,
+          arrived_at: old_visit.arrived_at,
           start_at: old_visit.start_at,
-          end_at: old_visit.end_at 
+          end_at: old_visit.end_at ,
+          volunteer: !!old_visit.volunteer
         }
       end
       Visit.insert_all!(visits)
