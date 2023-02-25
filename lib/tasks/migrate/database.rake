@@ -163,6 +163,7 @@ class DatabaseTasks
           created_at: old_person.created_at,
           updated_by_user_id: old_person.updated_by_id,
           created_by_user_id: old_person.created_by_id,
+          staff: !!old_person.staff,
           phone: phone,
           birth_year: old_person.yob,
           country: 'US',
