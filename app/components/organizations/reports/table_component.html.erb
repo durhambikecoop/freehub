@@ -19,6 +19,18 @@
           <% end %>
         </tr>
       <% end %>
+      <tr>
+        <td colspan="<%=@columns.length%>">
+          <div class="flex justify-between">
+            <div>
+              <%= pagination %>
+            </div>
+            <div>
+              <%= export %>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
   </table>
-  <%= pagination %>
 </turbo-frame>

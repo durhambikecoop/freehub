@@ -1,3 +1,5 @@
+require 'exports/people_export'
+
 class Organizations::Reports::PeopleController < OrganizationController
   include Pagination
 
@@ -8,7 +10,13 @@ class Organizations::Reports::PeopleController < OrganizationController
     @people, @pagination = paginate(@people)
   end
 
-  def export() end
+  def export
+    respond_to do |format|
+      format.csv do
+        send_data Exports::PeopleExport.new(@people).to_csv, filename: "#{@org.slug}-people-export.csv"
+      end
+    end
+  end
 
   private
 
@@ -24,15 +32,13 @@ class Organizations::Reports::PeopleController < OrganizationController
 
     if params[:created_at_gte].present?
       @people = @people.where(
-        'created_at >= ?',
-        params[:created_at_gte]
+        People.arel_table[:created_at].gteq(params[:created_at_gte])
       )
     end
 
     if params[:created_at_lte].present?
       @people = @people.where(
-        'created_at <= ?',
-        params[:created_at_lte]
+        People.arel_table[:created_at].lteq(params[:created_at_lte])
       )
     end
   end

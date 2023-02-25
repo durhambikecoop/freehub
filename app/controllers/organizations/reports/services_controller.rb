@@ -1,3 +1,5 @@
+require 'exports/services_export'
+
 class Organizations::Reports::ServicesController < OrganizationController
   include Pagination
   before_action :set_page_title
@@ -7,7 +9,13 @@ class Organizations::Reports::ServicesController < OrganizationController
     @services, @pagination = paginate(@services)
   end
 
-  def export() end
+  def export
+    respond_to do |format|
+      format.csv do
+        send_data Exports::ServicesExport.new(@services).to_csv, filename: "#{@org.slug}-services-export.csv"
+      end
+    end
+  end
 
   private
 
