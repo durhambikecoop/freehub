@@ -41,6 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_08_181157) do
     t.text "email"
     t.text "phone"
     t.boolean "email_opt_out", default: false, null: false
+    t.boolean "staff", default: false, null: false
     t.bigint "organization_id", null: false
     t.bigint "created_by_user_id", null: false
     t.bigint "updated_by_user_id", null: false

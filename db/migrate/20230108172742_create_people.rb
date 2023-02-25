@@ -9,6 +9,7 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.text :email, null: true
       t.text :phone, null: true
       t.boolean :email_opt_out, null: false, default: false
+      t.boolean :staff, null: false, default: false
       t.references :organization, null: false, foreign_key: true
       t.references :created_by_user, null: false, foreign_key: { to_table: :users }
       t.references :updated_by_user, null: false, foreign_key: { to_table: :users }
