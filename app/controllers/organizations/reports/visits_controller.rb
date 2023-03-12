@@ -13,7 +13,7 @@ class Organizations::Reports::VisitsController < OrganizationController
   def export
     respond_to do |format|
       format.csv do
-        send_data Exports::VisitsExport.new(@visits).to_csv, filename: "#{@org.slug}-visits-export.csv"
+        send_data Exports::VisitsExport.new(@visits).to_csv, filename: "#{@org.slug}-visits-export-#{Time.now.strftime('%F')}.csv"
       end
     end
   end

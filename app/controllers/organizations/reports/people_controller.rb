@@ -13,7 +13,7 @@ class Organizations::Reports::PeopleController < OrganizationController
   def export
     respond_to do |format|
       format.csv do
-        send_data Exports::PeopleExport.new(@people).to_csv, filename: "#{@org.slug}-people-export.csv"
+        send_data Exports::PeopleExport.new(@people).to_csv, filename: "#{@org.slug}-people-export-#{Time.now.strftime('%F')}.csv"
       end
     end
   end

@@ -2,13 +2,13 @@ require 'csv'
 
 module Exports
   class Export
-    class_attribute :columns, default: []
-    class_attribute :model_class
+    class_attribute :columns, instance_writer: false
+    class_attribute :model_class, instance_writer: false
 
     def initialize(collection)
       @collection = collection
       raise 'Exporter must have a model_class attribute' unless self.model_class
-      raise "collection must be an ActiveRecord::Relation of #{model_class.name}" unless @collection.is_a?(ActiveRecord::Relation) && @collection.klass == self.model_class
+      raise "collection must be an ActiveRecord::Relation of #{model_class.name}" unless @collection.is_a?(ActiveRecord::Relation) && @collection.name == self.model_class.name
     end
 
     def to_csv
@@ -54,7 +54,9 @@ module Exports
     end
 
     def self.inherited(subclass)
+      super
       subclass.columns = []
+      subclass.model_class = nil
     end
 
     # Add a column to the export

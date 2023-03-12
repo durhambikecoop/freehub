@@ -12,7 +12,7 @@ class Organizations::Reports::ServicesController < OrganizationController
   def export
     respond_to do |format|
       format.csv do
-        send_data Exports::ServicesExport.new(@services).to_csv, filename: "#{@org.slug}-services-export.csv"
+        send_data Exports::ServicesExport.new(@services).to_csv, filename: "#{@org.slug}-services-export-#{Time.now.strftime('%F')}.csv"
       end
     end
   end
@@ -21,6 +21,18 @@ class Organizations::Reports::ServicesController < OrganizationController
 
   def set_services
     @services = @org.services
+
+    if params[:start_date].present?
+      @services = @services.where( Service.arel_table[:end_date].lteq(params[:start_date]) )
+    end
+
+    if params[:end_date].present?
+      @services = @services.where( Service.arel_table[:start_date].gteq(params[:end_date]) )
+    end
+
+    if params[:service_type].present?
+      @services = @services.where(service_type: params[:service_type])
+    end
   end
 
   def set_page_title
