@@ -5,10 +5,10 @@
 
 # Docker config details at
 # https://blog.codeship.com/running-rails-development-environment-docker/
-FROM ruby:1.9.3
-MAINTAINER Alon Salant <alon@salant.org>
+FROM ruby:3.2.1 AS freehub
 
-RUN apt-get update && apt-get install -y mysql-client
+RUN apt-get update && apt-get install -y --no-install-recommends nodejs npm
+#RUN apt-get update && apt-get install -y mysql-client
 
 # Configure the main working directory. This is the base
 # directory used in any further RUN, COPY, and ENTRYPOINT
@@ -21,7 +21,8 @@ WORKDIR /app
 # will be cached unless changes to one of those two files
 # are made.
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler -v 1.15.4
+RUN gem install rails bundler 
+# -v 1.15.4 this was on the bundler command above, I'm going to try without it - Tony Olivo 2023-03-28
 RUN bundle install --jobs 20 --retry 5
 
 # Copy the main application.
@@ -34,4 +35,4 @@ EXPOSE 3000
 # The main command to run when the container starts. Also
 # tell the Rails dev server to bind to all interfaces by
 # default.
-CMD ["./script/server -b 0.0.0.0"]
+CMD ["./bin/dev"]
